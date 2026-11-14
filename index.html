@@ -5846,9 +5846,11 @@ html:not(.unlocked) #gl-sync{display:none}
     b.onsubmit=function(e){e.preventDefault();var f=e.target,a=f.dataset.a,s=stayOf(e),r=cur();
       if(a==='paste')return addLink(f.u.value,f);
       if(a==='price'&&s){var v=parseFloat(f.p.value);if(!(v>0))return;s.usd=toUSD(v,f.c.value);s.priceFor=r.from+'|'+r.to;save();f.p.blur();render();return}
-      if(a==='save'&&s){s.name=f.name.value.trim();s.addr=f.addr.value.trim();s.photos=f.photos.value.split(/\s*\n\s*/).filter(function(x){return /^https?:\/\//.test(x)});var u=parseFloat(f.usd.value);if(u>0){s.usd=u;s.priceFor=r.from+'|'+r.to}else{s.usd=0}
+      if(a==='save'&&s){var oldAddr=s.addr;s.name=f.name.value.trim();s.addr=f.addr.value.trim();s.photos=f.photos.value.split(/\s*\n\s*/).filter(function(x){return /^https?:\/\//.test(x)});var u=parseFloat(f.usd.value);if(u>0){s.usd=u;s.priceFor=r.from+'|'+r.to}else{s.usd=0}
         ui.edit=null;var go=function(){save();document.activeElement&&document.activeElement.blur();render()};
-        if(s.addr&&s.lat==null){geocode(s.addr+(isHanoi()?', Hanoi':'')).then(function(g){if(g){s.lat=g.lat;s.lon=g.lon}go()},go)}else go();return}};
+        if(s.addr&&(s.lat==null||s.addr!==oldAddr)){msg('Finding '+s.addr+' on the map…');var q=s.addr+(isHanoi()&&!/hanoi|hà nội|ha noi/i.test(s.addr)?', Hanoi':'');
+          withTimeout(geocode(q),8000).catch(function(){return null}).then(function(g){if(!g&&s.name)return withTimeout(geocode(s.name+(isHanoi()?', Hanoi':'')),8000).catch(function(){return null});return g}).then(function(g){
+            if(g){s.lat=g.lat;s.lon=g.lon;ui.sel=s.id}go();if(g)msg('Pinned '+(s.name||'it')+' on the map.');else msg('I couldn’t find that address on the map. Try just the street and number, or tap edit, then “Tap the map instead”.',true)})}else go();return}};
   }
   function addLink(v,f){var sp=splitPaste(v),u=cleanUrl(sp.u||'');if(!u){msg('That doesn’t look like a link. Copy it from the address bar or the Share button.',true);return}
     var r=cur(),src=srcOf(u);if(D.stays.some(function(s){return s.row===r.id&&s.url===u})){msg('That one is already in this row.',true);return}
@@ -5868,10 +5870,15 @@ html:not(.unlocked) #gl-sync{display:none}
   function isDark(){var t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
   function tiles(){if(!map)return;tl.forEach(function(t){map.removeLayer(t)});tl=[];var E='https://server.arcgisonline.com/ArcGIS/rest/services/',A='Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
     if(isDark()){tl.push(L.tileLayer(E+'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:16,attribution:A}));tl.push(L.tileLayer(E+'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:16,pane:'overlayPane'}))}
-    else tl.push(L.tileLayer(E+'World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:18,attribution:A}));tl.forEach(function(t){t.addTo(map)})}
-  function drawMap(){var host=document.getElementById('st-map');if(!host||!window.L)return;
-    if(map&&map.getContainer()!==host){map.remove();map=null}
-    if(!map){map=L.map(host,{zoomControl:true,scrollWheelZoom:false,zoomSnap:0.25,attributionControl:true});map.attributionControl.setPrefix('');tiles();mlayer=L.layerGroup().addTo(map);
+    else tl.push(L.tileLayer(E+'World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:18,attribution:A}));
+    if(tiles.osm){tl.forEach(function(t){map.removeLayer(t)});tl=[L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'})]}
+    var ok=0,bad=0;tl[0].on('tileload',function(){ok++});tl[0].on('tileerror',function(){bad++;if(bad>6&&!ok&&!tiles.osm){tiles.osm=1;tiles()}});tl.forEach(function(t){t.addTo(map)})}
+  function drawMap(){var ph=document.getElementById('st-map');if(!ph||!window.L)return;
+    // keep one map for the life of the page: move it into each fresh render instead of rebuilding it
+    if(drawMap.host&&ph!==drawMap.host){ph.parentNode.replaceChild(drawMap.host,ph)}else if(!drawMap.host)drawMap.host=ph;
+    var host=drawMap.host;
+    if(!map){if(window.ResizeObserver)new ResizeObserver(function(){if(map&&host.offsetWidth){map.invalidateSize();if(drawMap.blank){drawMap.blank=0;drawMap.k2=null;drawMap()}}}).observe(host);
+      map=L.map(host,{zoomControl:true,scrollWheelZoom:false,zoomSnap:0.25,attributionControl:true});map.attributionControl.setPrefix('');tiles();mlayer=L.layerGroup().addTo(map);
       map.on('click',function(e){if(!ui.pinFor)return;var s=D.stays.find(function(x){return x.id===ui.pinFor});ui.pinFor=null;if(s){s.lat=+e.latlng.lat.toFixed(6);s.lon=+e.latlng.lng.toFixed(6);ui.sel=s.id;save()}render()});
       if(!drawMap.mo){drawMap.mo=1;new MutationObserver(function(){if(map)tiles()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})}}
     mlayer.clearLayers();var r=cur(),pts=[];
@@ -5883,7 +5890,7 @@ html:not(.unlocked) #gl-sync{display:none}
       var m=L.marker([s.lat,s.lon],{zIndexOffset:mine?(rr.pick===s.id?1000:s.st==='star'?500:100):0,icon:L.divIcon({className:'',html:'<div class="st-mk '+c+'" title="'+esc(s.name)+'"><i>'+(rr.pick===s.id?'♛':numOf(s))+'</i>'+esc(lab)+'</div>',iconSize:[0,0]})}).addTo(mlayer);
       m.on('click',function(){if(!mine){ui.row=s.row}ui.sel=s.id;render();setTimeout(function(){var c=document.getElementById('st-c-'+s.id);if(c)c.scrollIntoView({behavior:'smooth',block:'center'})},60)});
       if(mine)pts.push([s.lat,s.lon])});
-    setTimeout(function(){map.invalidateSize();var key=r.id+':'+pts.length;if(drawMap.k===key&&!ui.sel)return;drawMap.k=key;
+    setTimeout(function(){if(!host.offsetWidth){drawMap.blank=1;return}map.invalidateSize();var key=r.id+':'+pts.length;if(drawMap.k===key&&!ui.sel)return;drawMap.k=key;
       if(ui.sel){var s=D.stays.find(function(x){return x.id===ui.sel});if(s&&s.lat!=null&&!map.getBounds().pad(-.1).contains([s.lat,s.lon])){map.panTo([s.lat,s.lon]);return}}
       if(drawMap.k2===key)return;drawMap.k2=key;
       if(pts.length>1)map.fitBounds(pts,{padding:[50,50],maxZoom:16});else if(pts.length)map.setView(pts[0],15);else map.setView(isHanoi()?[21.033,105.849]:(function(){try{return mpCenter()}catch(e){return [21.033,105.849]}})(),14)},40)}
