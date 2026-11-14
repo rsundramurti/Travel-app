@@ -34,7 +34,7 @@ jobs:
             cp android/app/src/main/res/mipmap-$n/ic_launcher.png android/app/src/main/res/mipmap-$n/ic_launcher_round.png
             convert ../icons/maskable-512.png -resize $((s*9/4))x$((s*9/4)) android/app/src/main/res/mipmap-$n/ic_launcher_foreground.png
           done
-          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources><color name="ic_launcher_background">#E9C3EC</color></resources>\n' > android/app/src/main/res/values/ic_launcher_background.xml
+          printf '<?xml version="1.0" encoding="utf-8"?>\n<resources><color name="ic_launcher_background">#F3A9A6</color></resources>\n' > android/app/src/main/res/values/ic_launcher_background.xml
           npx cap sync android
           cd android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
           cp app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/our-hanoi-journey.apk"

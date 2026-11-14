@@ -1,5 +1,5 @@
 /* Offline support: the app and its photos are kept on the phone; map tiles you've viewed stay available. */
-const V='hb-v3',SHELL=['./','index.html','manifest.json','icons/icon-192.png','icons/icon-512.png'];
+const V='hb-v4',SHELL=['./','index.html','manifest.json','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V&&k!=='hb-tiles').map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 const TILE=/arcgisonline\.com|tile\.openstreetmap\.org|upload\.wikimedia\.org|cdn\.jsdelivr\.net/;
