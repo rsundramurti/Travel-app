@@ -5726,9 +5726,12 @@ html:not(.unlocked) #gl-sync{display:none}
   function visible(){var v=document.getElementById('view-hotels');return v&&!v.hidden}
 
   /* ---------- links ---------- */
-  function srcOf(u){return /booking\.com/i.test(u)?'bk':/airbnb\./i.test(u)?'ab':'ot'}
+  function srcOf(u){return /booking\.com/i.test(u)?'bk':/airbnb\.|abnb\.me/i.test(u)?'ab':'ot'}
+  function splitPaste(v){v=String(v||'');var m=v.match(/https?:\/\/\S+/i);if(!m)return {u:v.trim(),t:''};
+    var t=v.replace(m[0],' ').replace(/check (this|it)? ?out:?|look at this:?|on booking\.com|on airbnb|booking\.com|airbnb/ig,' ').replace(/[\s|·•:!-]+$/,'').replace(/^[\s|·•:!-]+/,'').replace(/\s+/g,' ').trim();return {u:m[0].replace(/[).,]+$/,''),t:t.length>2&&t.length<120?t:''}}
+  function withTimeout(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(0)},ms)})])}
   function srcName(k){return {bk:'Booking.com',ab:'Airbnb',ot:'Link'}[k]}
-  function cleanUrl(u){try{var x=new URL(u.trim());if(srcOf(u)==='bk'){var keep=new URL(x.origin+x.pathname);return keep.href}if(srcOf(u)==='ab'){var m=x.pathname.match(/\/rooms\/(?:plus\/)?(\d+)/);if(m)return x.origin+'/rooms/'+m[1]}return x.href}catch(e){return null}}
+  function cleanUrl(u){try{var x=new URL(u.trim());if(/\/share-|\/slink\/|abnb\.me/i.test(x.href))return x.href;if(srcOf(u)==='bk'){var keep=new URL(x.origin+x.pathname);return keep.href}if(srcOf(u)==='ab'){var m=x.pathname.match(/\/rooms\/(?:plus\/)?(\d+)/);if(m)return x.origin+'/rooms/'+m[1]}return x.href}catch(e){return null}}
   function guessName(u){try{var p=new URL(u).pathname;var m=p.match(/\/hotel\/[a-z]{2}\/([^.\/]+)/i);if(m)return m[1].split('-').map(function(w){return w?w[0].toUpperCase()+w.slice(1):w}).join(' ')}catch(e){}return ''}
   function dated(s,r){try{var x=new URL(s.url);var q=x.searchParams;if(s.src==='bk'){q.set('checkin',r.from);q.set('checkout',r.to);q.set('group_adults','2');q.set('no_rooms','1');q.set('group_children','0');q.set('selected_currency','USD')}
       else if(s.src==='ab'){q.set('check_in',r.from);q.set('check_out',r.to);q.set('adults','2')}return x.href}catch(e){return s.url}}
@@ -5778,7 +5781,7 @@ html:not(.unlocked) #gl-sync{display:none}
       '<div class="st-sum"><span>Stays picked: <b>'+D.rows.filter(function(r){return r.pick}).length+' of '+D.rows.length+'</b></span><span>Total for our picks: <b>'+(tot?money(tot):'–')+'</b>'+(all||!tot?'':' <span class="st-muted">(some prices missing)</span>')+'</span></div></div>'}
   function addBox(r){var L=searchLinks(r),n=nights(r);
     return '<div class="panel"><div class="st-h"><h2 style="font-size:17px">'+I.link+' Add a stay to “'+esc(r.label||'this row')+'” · '+esc(rng(r))+'</h2></div>'+
-      '<form class="st-paste" data-a="paste"><input class="st-in" type="url" name="u" placeholder="Paste a Booking.com or Airbnb link" required aria-label="Booking.com or Airbnb link"><button class="st-btn" type="submit">'+I.plus+'Add stay</button></form>'+
+      '<form class="st-paste" data-a="paste"><input class="st-in" type="text" inputmode="url" autocomplete="off" name="u" placeholder="Paste a Booking.com or Airbnb link" required aria-label="Booking.com or Airbnb link"><button class="st-btn" type="submit">'+I.plus+'Add stay</button></form>'+
       '<p class="st-msg" id="st-msg" role="status"></p>'+
       '<div class="st-srch"><span class="st-muted">Find more for these '+n+' nights:</span><a class="st-btn gh sm" href="'+esc(L.bk)+'" target="_blank" rel="noopener"><span class="st-src bk">Booking.com</span>Search '+esc(rng(r))+'</a><a class="st-btn gh sm" href="'+esc(L.ab)+'" target="_blank" rel="noopener"><span class="st-src ab">Airbnb</span>Search '+esc(rng(r))+'</a></div></div>'}
   function seg(r){var l=staysOf(r.id),c={all:l.filter(function(s){return s.st!=='gone'}).length,star:l.filter(function(s){return s.st==='star'}).length,gone:l.filter(function(s){return s.st==='gone'}).length};
@@ -5804,7 +5807,7 @@ html:not(.unlocked) #gl-sync{display:none}
         '<button class="st-btn gh sm'+(s.st==='star'?' on':'')+'" data-a="star">'+I.star+(s.st==='star'?'Shortlisted':'Shortlist')+'</button><button class="st-btn gh sm x" data-a="gone" title="Remove" aria-label="Remove">'+I.x+'</button>')+'</div>'+
       (s.st==='star'?'<button class="st-btn '+(pk?'gh':'pk')+' sm" data-a="pick">'+I.crown+(pk?'Undo our pick':'Make this our stay for '+esc(rng(r)))+'</button>':'')+'</div>';
     if(ui.edit===s.id)h+='<form class="st-edit" data-a="save"><label>Name<input class="st-in" name="name" value="'+esc(s.name)+'"></label><label>Address<input class="st-in" name="addr" value="'+esc(s.addr)+'"></label>'+
-      '<label>Photo links (one per line)<textarea class="st-in" name="photos" rows="3" style="height:auto;padding:8px 12px">'+esc(ph.join('\n'))+'</textarea></label>'+
+      '<label>Photo links (one per line). On the listing, long-press or right-click a photo, choose “Copy image address”, and paste it here.<textarea class="st-in" name="photos" rows="3" style="height:auto;padding:8px 12px">'+esc(ph.join('\n'))+'</textarea></label>'+
       '<label>Total price for '+n+' nights (US$)<input class="st-in" type="number" min="0" step="any" name="usd" value="'+(s.usd?Math.round(s.usd):'')+'"></label>'+
       '<div class="st-er"><button class="st-btn sm" type="submit">Save</button><button class="st-btn gh sm" type="button" data-a="find">'+I.pin+'Find address on map</button><button class="st-btn gh sm" type="button" data-a="setpin">Tap the map instead</button><button class="st-btn gh sm x" type="button" data-a="del">Delete</button></div></form>';
     return h+'</div>'}
@@ -5847,19 +5850,19 @@ html:not(.unlocked) #gl-sync{display:none}
         ui.edit=null;var go=function(){save();document.activeElement&&document.activeElement.blur();render()};
         if(s.addr&&s.lat==null){geocode(s.addr+(isHanoi()?', Hanoi':'')).then(function(g){if(g){s.lat=g.lat;s.lon=g.lon}go()},go)}else go();return}};
   }
-  function addLink(v,f){var u=cleanUrl(v||'');if(!u){msg('That doesn’t look like a link. Copy it from the address bar or the Share button.',true);return}
+  function addLink(v,f){var sp=splitPaste(v),u=cleanUrl(sp.u||'');if(!u){msg('That doesn’t look like a link. Copy it from the address bar or the Share button.',true);return}
     var r=cur(),src=srcOf(u);if(D.stays.some(function(s){return s.row===r.id&&s.url===u})){msg('That one is already in this row.',true);return}
-    var s={id:nid(),row:r.id,url:u,src:src,name:guessName(u),addr:'',photos:[],lat:null,lon:null,usd:0,priceFor:'',st:'',va:false,vb:false,at:new Date().toISOString()};
+    var s={id:nid(),row:r.id,url:u,src:src,name:sp.t||guessName(u),addr:'',photos:[],lat:null,lon:null,usd:0,priceFor:'',st:'',va:false,vb:false,at:new Date().toISOString()};
     D.stays.push(s);ui.filter='all';ui.sel=s.id;save();busy=true;f.u.value='';f.u.blur();render();msg('Reading the link…');
-    fetchMeta(u,src).catch(function(){return null}).then(function(m){if(m){if(m.name)s.name=m.name;if(m.img)s.photos=[m.img];s.area=m.area||''}
+    withTimeout(fetchMeta(u,src),8000).catch(function(){return null}).then(function(m){if(m){if(m.name&&!sp.t)s.name=m.name;if(m.img)s.photos=[m.img];s.area=m.area||''}
       var q=(s.name||s.area)?(s.name||'')+(s.area?', '+s.area:''):'';
-      return (q?geocode(q+(isHanoi()?', Hanoi':'')).catch(function(){return null}):Promise.resolve(null)).then(function(g){
-        if(!g&&s.area)return geocode(s.area+(isHanoi()?', Hanoi':'')).catch(function(){return null});return g})
+      return (q?withTimeout(geocode(q+(isHanoi()?', Hanoi':'')),8000).catch(function(){return null}):Promise.resolve(null)).then(function(g){
+        if(!g&&s.area)return withTimeout(geocode(s.area+(isHanoi()?', Hanoi':'')),8000).catch(function(){return null});return g})
       .then(function(g){if(g){s.lat=g.lat;s.lon=g.lon;s.addr=g.addr}
         var miss=[];if(!s.name)miss.push('name');if(!s.photos.length)miss.push('photo');if(s.lat==null)miss.push('address');
-        busy=false;save();render();
-        msg(miss.length?'Added. I couldn’t read the '+miss.join(', ')+' from the link, so tap edit on the card to fill '+(miss.length>1?'them':'it')+' in. Then tap “Check price” on the card and type the total you see.':'Added. Now tap “Check price for '+rng(r)+'” on the card and type the total you see.',!!miss.length);
-        var c=document.getElementById('st-c-'+s.id);if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'})})})}
+        busy=false;if(miss.length)ui.edit=s.id;save();render();
+        msg(miss.length?'Added. The link didn’t give us the '+miss.join(', ')+', so fill '+(miss.length>1?'them':'it')+' in on the card below, then tap “Check price” and type the total you see.':'Added. Now tap “Check price for '+rng(r)+'” on the card and type the total you see.',!!miss.length);
+        var c=document.getElementById('st-c-'+s.id);if(c){c.scrollIntoView({behavior:'smooth',block:'center'});var fi=c.querySelector(!s.name?'input[name=name]':s.lat==null?'input[name=addr]':'textarea[name=photos]');if(fi&&miss.length)setTimeout(function(){fi.focus({preventScroll:true})},400)}})})}
 
   /* ---------- map ---------- */
   function isDark(){var t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
