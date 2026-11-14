@@ -5432,4 +5432,344 @@ html:not(.unlocked) #gl-sync{display:none}
     b.onclick=function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;b.hidden=true})};document.body.appendChild(b)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){gate();installBtn()});else{gate();installBtn()}
 })();
+</script><style id="stays-css">/* Stays page (replaces the old Hotels page) */
+#view-hotels .destbar,#view-hotels #h-dest{display:none!important}
+#view-hotels .st-wrap{display:grid;gap:16px;margin-top:14px}
+#view-hotels .st-ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-3px}
+#view-hotels .st-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0}
+#view-hotels .st-h h2{margin:0;font-size:20px}
+#view-hotels .st-h .st-sp{flex:1}
+#view-hotels .st-muted{color:var(--muted)}
+#view-hotels .st-btn{border:0;font:600 14px/1 inherit;font-family:inherit;padding:0 16px;height:40px;border-radius:12px;background:var(--accent);color:var(--accent-ink,#fff);display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;white-space:nowrap;text-decoration:none;box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+#view-hotels .st-btn:disabled{opacity:.55;cursor:default}
+#view-hotels .st-btn.gh{background:var(--surface);color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));box-shadow:none}
+#view-hotels .st-btn.sm{height:34px;padding:0 12px;font-size:13px;border-radius:999px}
+#view-hotels .st-btn.x{color:#c4534d;border-color:color-mix(in srgb,#c4534d 30%,var(--line))}
+#view-hotels .st-btn.on{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent)}
+#view-hotels .st-btn.pk{background:linear-gradient(135deg,#ffb84d,#ff7a59);color:#fff;box-shadow:0 6px 16px rgba(255,122,89,.35)}
+#view-hotels .st-in,#view-hotels .st-sel{height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px inherit;font-family:inherit;padding:0 12px;min-width:0}
+#view-hotels .st-in:focus,#view-hotels .st-sel:focus{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:1px}
+/* nights plan */
+#view-hotels .st-rows{display:grid;gap:10px}
+#view-hotels .st-row{display:grid;grid-template-columns:minmax(150px,1.2fr) auto auto auto auto minmax(150px,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:16px;border:1.5px solid transparent;background:color-mix(in srgb,var(--surface) 70%,transparent);cursor:pointer}
+#view-hotels .st-row.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface))}
+#view-hotels .st-row .st-n{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 9px;border-radius:999px;white-space:nowrap}
+#view-hotels .st-row .st-arrow{color:var(--muted)}
+#view-hotels .st-row .st-pickt{font-size:13px;line-height:1.3;min-width:0}
+#view-hotels .st-row .st-pickt b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-hotels .st-row .st-del{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);display:grid;place-items:center;cursor:pointer}
+#view-hotels .st-tl{display:grid;gap:3px;margin-top:4px}
+#view-hotels .st-tl-days{display:grid;gap:3px}
+#view-hotels .st-tl-d{font-size:11px;color:var(--muted);text-align:center;padding:2px 0}
+#view-hotels .st-tl-c{height:8px;border-radius:4px;background:color-mix(in srgb,var(--muted) 18%,transparent)}
+#view-hotels .st-tl-c.ok{background:var(--accent)}
+#view-hotels .st-tl-c.two{background:#e0a03a}
+#view-hotels .st-warn{font-size:13px;color:#b0602a;margin:2px 0 0}
+#view-hotels .st-sum{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+#view-hotels .st-sum b{font-size:17px}
+/* add */
+#view-hotels .st-paste{display:flex;gap:10px}
+#view-hotels .st-paste .st-in{flex:1;height:46px}
+#view-hotels .st-paste .st-btn{height:46px}
+#view-hotels .st-srch{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px}
+#view-hotels .st-msg{font-size:13px;margin:0}
+#view-hotels .st-msg.err{color:#c4534d}
+#view-hotels .st-src{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;color:#fff;letter-spacing:.01em;white-space:nowrap}
+#view-hotels .st-src.bk{background:#1f4fb3}.st-src.ab{background:#ff4d6d}.st-src.ot{background:#6b6b80}
+/* toolbar */
+#view-hotels .st-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#view-hotels .st-seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line)}
+#view-hotels .st-seg button{border:0;background:none;font:500 13.5px inherit;font-family:inherit;color:var(--muted);padding:7px 13px;border-radius:999px;cursor:pointer;display:flex;gap:6px;align-items:center}
+#view-hotels .st-seg button.on{background:var(--surface);color:var(--accent);box-shadow:0 3px 10px rgba(60,30,120,.12)}
+#view-hotels .st-seg i{font-style:normal;font-size:11px;font-weight:700;background:var(--accent-soft);color:var(--accent);padding:1px 7px;border-radius:999px}
+#view-hotels .st-bar .st-sp{flex:1}
+/* main */
+#view-hotels .st-main{display:grid;grid-template-columns:1fr minmax(320px,440px);gap:16px;align-items:start}
+#view-hotels .st-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+#view-hotels .st-card{border-radius:20px;overflow:hidden;background:color-mix(in srgb,var(--surface) 82%,transparent);border:1px solid var(--line);box-shadow:0 8px 24px rgba(60,30,120,.08);display:flex;flex-direction:column;position:relative}
+#view-hotels .st-card.st-ispick{outline:2.5px solid #ff8a4c;outline-offset:-1px}
+#view-hotels .st-card.st-issel{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 40%,transparent),0 12px 28px rgba(60,30,120,.15)}
+#view-hotels .st-card.st-isgone{opacity:.6;filter:grayscale(.7)}
+#view-hotels .st-ph{position:relative;height:160px;background:linear-gradient(135deg,var(--accent-soft),color-mix(in srgb,var(--accent) 30%,var(--surface)));display:grid;place-items:center;color:var(--accent)}
+#view-hotels .st-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#view-hotels .st-ph:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 40%,transparent 70%,rgba(0,0,0,.25));pointer-events:none}
+#view-hotels .st-ph .st-src{position:absolute;left:10px;top:10px;z-index:2}
+#view-hotels .st-num{position:absolute;right:10px;top:10px;z-index:2;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--accent);font-weight:700;font-size:13px;display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+#view-hotels .st-card.st-isstar .st-num{background:var(--accent);color:#fff}
+#view-hotels .st-badge{position:absolute;left:10px;bottom:10px;z-index:2;background:linear-gradient(135deg,#ffb84d,#ff7a59);color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+#view-hotels .st-pnav{position:absolute;z-index:2;top:50%;margin-top:-15px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#333;cursor:pointer;font-size:16px;line-height:1}
+#view-hotels .st-pnav.l{left:8px}.st-pnav.r{right:8px}
+#view-hotels .st-dots{position:absolute;bottom:10px;right:12px;z-index:2;display:flex;gap:4px}
+#view-hotels .st-dots b{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55)}.st-dots b.on{background:#fff}
+#view-hotels .st-bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+#view-hotels .st-bd h3{margin:0;font-size:17px;line-height:1.25}
+#view-hotels .st-addr{font-size:13px;color:var(--muted);display:flex;gap:5px;line-height:1.35}
+#view-hotels .st-addr .st-ic{width:14px;height:14px;margin-top:1px}
+#view-hotels .st-walk{font-size:12.5px;color:var(--accent);font-weight:500}
+#view-hotels .st-price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-top:2px}
+#view-hotels .st-price b{font-size:20px}
+#view-hotels .st-price span{font-size:13px;color:var(--muted)}
+#view-hotels .st-price.none{font-size:13px;color:var(--muted)}
+#view-hotels .st-pin{display:flex;gap:6px;align-items:center}
+#view-hotels .st-pin .st-in{height:36px;width:110px;flex:1}
+#view-hotels .st-pin .st-sel{height:36px;padding:0 6px}
+#view-hotels .st-dated{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;display:inline-flex;gap:5px;align-items:center}
+#view-hotels .st-foot{display:flex;gap:6px;align-items:center;margin-top:auto;padding-top:6px;flex-wrap:wrap}
+#view-hotels .st-v{width:30px;height:30px;border-radius:50%;border:0;display:grid;place-items:center;font:700 12px inherit;font-family:inherit;cursor:pointer;position:relative;background:color-mix(in srgb,var(--muted) 18%,transparent);color:var(--muted)}
+#view-hotels .st-v.on.a{background:#6d5bd0;color:#fff}.st-v.on.b{background:#78c25a;color:#fff}
+#view-hotels .st-v.on:after{content:"♥";position:absolute;right:-3px;bottom:-3px;font-size:9px;color:#ff4d8d;background:#fff;border-radius:50%;width:14px;height:14px;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+#view-hotels .st-foot .st-sp{flex:1}
+#view-hotels .st-edit{display:grid;gap:8px;padding:10px 14px 14px;border-top:1px solid var(--line)}
+#view-hotels .st-edit label{font-size:12px;color:var(--muted);font-weight:600;display:grid;gap:4px}
+#view-hotels .st-edit .st-in{height:36px}
+#view-hotels .st-edit .st-er{display:flex;gap:8px;flex-wrap:wrap}
+#view-hotels .st-empty{grid-column:1/-1;padding:28px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:18px}
+/* map */
+#view-hotels .st-mapc{position:sticky;top:96px;padding:10px!important}
+#view-hotels .st-maph{display:flex;align-items:center;gap:8px;padding:2px 4px 8px;font-weight:600}
+#view-hotels .st-maph .st-sp{flex:1}
+#view-hotels .st-maph label{font-weight:500;font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+#view-hotels #st-map{height:560px;border-radius:14px;overflow:hidden;background:color-mix(in srgb,var(--muted) 12%,transparent)}
+#view-hotels .st-maphint{font-size:12px;color:var(--muted);padding:8px 4px 0}
+#view-hotels .st-mk{transform:translate(-50%,-100%);display:inline-flex;align-items:center;gap:5px;background:#fff;color:#26213a;font:700 12.5px system-ui,sans-serif;padding:4px 9px 4px 4px;border-radius:999px;box-shadow:0 4px 12px rgba(40,20,90,.3);white-space:nowrap;position:relative;cursor:pointer}
+#view-hotels .st-mk:after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-top-color:#fff;border-bottom:0}
+#view-hotels .st-mk i{font-style:normal;width:20px;height:20px;border-radius:50%;background:#efe9fd;color:#7b5ce1;display:grid;place-items:center;font-size:11px}
+#view-hotels .st-mk.st{background:var(--accent);color:#fff}.st-mk.st:after{border-top-color:var(--accent)}.st-mk.st i{background:#fff;color:var(--accent)}
+#view-hotels .st-mk.pk{background:linear-gradient(135deg,#ffb84d,#ff7a59);color:#fff}.st-mk.pk:after{border-top-color:#ff7a59}.st-mk.pk i{background:#fff;color:#ff7a59}
+#view-hotels .st-mk.sel{transform:translate(-50%,-100%) scale(1.15);z-index:5}
+#view-hotels .st-mk.oth{opacity:.55;background:#eee;color:#666}.st-mk.oth:after{border-top-color:#eee}
+#view-hotels .st-lm{transform:translate(-50%,-50%);display:flex;align-items:center;gap:5px;font:600 11.5px system-ui,sans-serif;color:#5b4a99;white-space:nowrap;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+#view-hotels .st-lm b{width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid #f2b23d;display:grid;place-items:center;font-size:10px;color:#f2b23d}
+#view-hotels .st-ring{stroke:none;fill:var(--accent);fill-opacity:.06}
+#view-hotels .st-mapc.pinning #st-map{cursor:crosshair;outline:3px solid var(--accent)}
+@media (max-width:980px){#view-hotels .st-main{grid-template-columns:1fr}#view-hotels .st-mapc{position:relative;top:0;order:-1}#view-hotels #st-map{height:340px}}
+@media (max-width:760px){
+ #view-hotels .st-row{grid-template-columns:1fr 18px 1fr 34px;grid-template-areas:"lab lab lab del" "in arrow out out" "n pick pick pick";row-gap:8px;column-gap:6px}
+ #view-hotels .st-row .st-lab{grid-area:lab}#view-hotels .st-row .st-del{grid-area:del}#view-hotels .st-row .st-ci{grid-area:in}#view-hotels .st-row .st-arrow{grid-area:arrow}#view-hotels .st-row .st-co{grid-area:out}#view-hotels .st-row .st-n{grid-area:n;justify-self:start}#view-hotels .st-row .st-pickt{grid-area:pick}
+ #view-hotels .st-paste{flex-direction:column}
+ #view-hotels .st-cards{grid-template-columns:1fr}
+ #view-hotels #st-map{height:300px}
+ #view-hotels .st-ph{height:190px}
+ #view-hotels .st-tl-d{font-size:10px}
+}
+
+#view-hotels .st-edbtn{position:absolute;right:10px;bottom:10px;z-index:3;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#4b3f80;display:grid;place-items:center;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+#view-hotels .st-edbtn .st-ic{width:15px;height:15px}
+#view-hotels .st-ph .st-dots{right:auto;left:50%;transform:translateX(-50%)}
+#view-hotels .st-foot .st-btn.sm{padding:0 11px}
+#view-hotels input.st-in,#view-hotels select.st-sel,#view-hotels textarea.st-in{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+#view-hotels button.st-v{padding:0!important;min-width:0!important;width:30px!important;height:30px!important;line-height:30px!important;border-radius:50%!important;background:color-mix(in srgb,var(--muted) 18%,transparent)!important;color:var(--muted)!important;box-shadow:none!important;transform:none!important}
+#view-hotels button.st-v.on.a{background:#6d5bd0!important;color:#fff!important}
+#view-hotels button.st-v.on.b{background:#78c25a!important;color:#fff!important}
+#view-hotels .st-pin input.st-in{border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line))!important;background:var(--surface)!important}
+#view-hotels .st-main>*,#view-hotels .st-cards>*,#view-hotels .st-wrap>*{min-width:0}
+#view-hotels .st-srch .st-btn{max-width:100%}
+#view-hotels button.st-v{flex:none}
+#view-hotels button.st-v{max-width:30px!important;max-height:30px!important;min-height:0!important}
+</style><script id="stays-js">/* Stays page: rows of nights, Booking.com / Airbnb links as cards, prices for each row's dates, a map, and narrowing down to one pick per row.
+   Data: db doc board/stays {rows:[{id,label,from,to,pick}], stays:[{id,row,url,src,name,addr,photos,lat,lon,usd,priceFor,st,va,vb,at}]} */
+(function(){
+  if(typeof renderHotels!=='function')return;
+  var D=null,sub=false,LS='glStays:v1',ui={row:null,filter:'all',sort:'walk',sel:null,edit:null,pinFor:null,allRows:false,ph:{}},map=null,mlayer=null,tl=[],busy=false;
+  var LAKE=[21.0288,105.8522];
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function nid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+  function ic(p){return '<svg class="st-ic" viewBox="0 0 24 24">'+p+'</svg>'}
+  var I={pin:ic('<path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>'),
+    link:ic('<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>'),
+    star:ic('<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/>'),
+    x:ic('<path d="M6 6l12 12M18 6L6 18"/>'),ext:ic('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'),
+    bed:ic('<path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.6"/>'),
+    edit:ic('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),plus:ic('<path d="M12 5v14M5 12h14"/>'),cal:ic('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+    crown:ic('<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>'),undo:ic('<path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>')};
+
+  /* ---------- dates ---------- */
+  function iso(d){return d.toISOString().slice(0,10)}
+  function dt(s){return new Date(s+'T00:00:00Z')}
+  function tripDays(){var out=[];try{for(var i=0;i<itin.days.length;i++)out.push(iso(itDate(i)))}catch(e){}if(!out.length){var s=dt('2027-02-13');for(var j=0;j<8;j++)out.push(iso(new Date(s.getTime()+j*864e5)))}return out}
+  function nights(r){return Math.max(0,Math.round((dt(r.to)-dt(r.from))/864e5))}
+  function fd(s,wd){var d=dt(s);return d.toLocaleDateString(undefined,wd?{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'}:{day:'numeric',month:'short',timeZone:'UTC'})}
+  function rng(r){return fd(r.from)+' – '+fd(r.to)}
+  function dest(){try{return (itin&&itin.dest)||curDest||'Hanoi'}catch(e){return 'Hanoi'}}
+  function isHanoi(){return /hanoi|ha noi|hà nội/i.test(dest())}
+
+  /* ---------- data ---------- */
+  function blank(){var d=tripDays();return {rows:[{id:nid(),label:dest(),from:d[0],to:d[d.length-1],pick:null}],stays:[]}}
+  function norm(v){v=v&&typeof v==='object'?v:{};if(!Array.isArray(v.rows)||!v.rows.length)v.rows=blank().rows;if(!Array.isArray(v.stays))v.stays=[];return v}
+  function load(){if(D)return;try{D=JSON.parse(localStorage.getItem(LS)||'null')}catch(e){}D=norm(D)}
+  function hookDb(){if(sub)return;var d=null;try{d=db}catch(e){}if(!d)return;sub=true;
+    try{d.doc('board/stays').onSnapshot(function(s){var v=s&&s.exists?s.data():null;if(v){D=norm(v);try{localStorage.setItem(LS,JSON.stringify(D))}catch(e){}if(!busy&&visible())render()}})}catch(e){console.error(e)}}
+  function save(){D.at=new Date().toISOString();try{localStorage.setItem(LS,JSON.stringify(D))}catch(e){}var d=null;try{d=db}catch(e){}
+    if(d){try{d.doc('board/stays').set(JSON.parse(JSON.stringify(D)))}catch(e){console.error(e)}}}
+  function row(id){return D.rows.find(function(r){return r.id===id})}
+  function cur(){var r=row(ui.row);if(!r){r=D.rows[0];ui.row=r.id}return r}
+  function staysOf(rid){return D.stays.filter(function(s){return s.row===rid})}
+  function numOf(s){return staysOf(s.row).indexOf(s)+1}
+  function visible(){var v=document.getElementById('view-hotels');return v&&!v.hidden}
+
+  /* ---------- links ---------- */
+  function srcOf(u){return /booking\.com/i.test(u)?'bk':/airbnb\./i.test(u)?'ab':'ot'}
+  function srcName(k){return {bk:'Booking.com',ab:'Airbnb',ot:'Link'}[k]}
+  function cleanUrl(u){try{var x=new URL(u.trim());if(srcOf(u)==='bk'){var keep=new URL(x.origin+x.pathname);return keep.href}if(srcOf(u)==='ab'){var m=x.pathname.match(/\/rooms\/(?:plus\/)?(\d+)/);if(m)return x.origin+'/rooms/'+m[1]}return x.href}catch(e){return null}}
+  function guessName(u){try{var p=new URL(u).pathname;var m=p.match(/\/hotel\/[a-z]{2}\/([^.\/]+)/i);if(m)return m[1].split('-').map(function(w){return w?w[0].toUpperCase()+w.slice(1):w}).join(' ')}catch(e){}return ''}
+  function dated(s,r){try{var x=new URL(s.url);var q=x.searchParams;if(s.src==='bk'){q.set('checkin',r.from);q.set('checkout',r.to);q.set('group_adults','2');q.set('no_rooms','1');q.set('group_children','0');q.set('selected_currency','USD')}
+      else if(s.src==='ab'){q.set('check_in',r.from);q.set('check_out',r.to);q.set('adults','2')}return x.href}catch(e){return s.url}}
+  function searchLinks(r){var where=(r.label&&r.label!==dest()?r.label+', ':'')+dest();
+    return {bk:'https://www.booking.com/searchresults.html?ss='+encodeURIComponent(where)+'&checkin='+r.from+'&checkout='+r.to+'&group_adults=2&no_rooms=1&group_children=0&selected_currency=USD',
+      ab:'https://www.airbnb.com/s/'+encodeURIComponent(where.replace(/,\s*/g,'--'))+'/homes?checkin='+r.from+'&checkout='+r.to+'&adults=2'}}
+  function tidyTitle(t,src){t=String(t||'').trim();if(src==='bk'){t=t.replace(/\s*[–—-]\s*(updated|book|prices|latest).*$/i,'').replace(/,\s*(hanoi|ha noi|vietnam).*$/i,'')}
+    if(src==='ab'){t=t.replace(/\s*-\s*Airbnb$/i,'').replace(/\s*·\s*★.*$/,'')}return t.trim()}
+  function fetchMeta(u,src){return fetch('https://api.microlink.io/?url='+encodeURIComponent(u)).then(function(r){return r.json()}).then(function(j){if(!j||j.status!=='success')throw 0;var d=j.data||{};
+      var name=tidyTitle(d.title,src),desc=String(d.description||'');
+      if(src==='ab'&&desc&&/^(rental unit|entire|room|private room|condo|home|apartment|serviced apartment|loft|guest suite|townhouse|hotel room|boutique hotel)\b/i.test(name)){var area=(name.match(/\bin ([^·]+)/i)||[])[1];name=desc.split(/[.·]/)[0].trim()||name;return {name:name,area:area?area.trim():'',img:d.image&&d.image.url}}
+      return {name:name,area:'',img:d.image&&d.image.url,desc:desc}})}
+  function geocode(q){var vb='&viewbox=105.70,21.12,105.95,20.93';return fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=en&q='+encodeURIComponent(q)+(isHanoi()?vb:'')).then(function(r){return r.json()}).then(function(a){return a&&a[0]?{lat:+a[0].lat,lon:+a[0].lon,addr:a[0].display_name.split(',').slice(0,4).join(',')}:null})}
+
+  /* ---------- helpers ---------- */
+  function km(a,b){var R=6371,t=Math.PI/180,dl=(b[0]-a[0])*t,dn=(b[1]-a[1])*t,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*t)*Math.cos(b[0]*t)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
+  function walk(s){if(s.lat==null||!isHanoi())return '';var k=km(LAKE,[s.lat,s.lon]),m=Math.round(k*1.3/4.8*60);return m<=25?m+' min walk to Hoàn Kiếm Lake':k.toFixed(1)+' km from Hoàn Kiếm Lake'}
+  function money(n){try{return usd(n)}catch(e){return 'US$'+Math.round(n)}}
+  function priceOk(s,r){return s.usd>0&&s.priceFor===r.from+'|'+r.to}
+  function mineTag(){var m=null;try{m=localStorage.getItem('glMe')}catch(e){}return m==='a'||m==='b'?m:null}
+  function nm(k){try{return profiles&&profiles[k==='a'?'id':'bd']&&profiles[k==='a'?'id':'bd'].name||(k==='a'?'Ray':'Shay')}catch(e){return k==='a'?'Ray':'Shay'}}
+
+  /* ---------- render ---------- */
+  function setHead(){var v=document.getElementById('view-hotels');if(!v)return;var e=v.querySelector('.eyebrow'),h=v.querySelector('h1'),l=v.querySelector('.lede');
+    if(e)e.textContent='Hotels and stays';if(h)h.textContent='Where we’ll stay';if(l)l.textContent='Split the trip into rows of nights, then paste Booking.com or Airbnb links into each row. Every stay gets a card and a pin on the map, its price is checked for that row’s dates, and you remove options until one is left.'}
+  function render(){load();hookDb();setHead();var b=document.getElementById('h-body');if(!b)return;
+    var a=document.activeElement;if(a&&b.contains(a)&&/INPUT|SELECT/.test(a.tagName)&&a.type!=='button'){b._pend=1;return}
+    var r=cur(),days=tripDays();
+    var h='<div class="st-wrap">'+plan(days)+addBox(r)+'<div class="st-bar">'+seg(r)+'<span class="st-sp"></span><select class="st-sel" data-a="sort" aria-label="Sort"><option value="walk"'+(ui.sort==='walk'?' selected':'')+'>Sort: closest to the lake</option><option value="price"'+(ui.sort==='price'?' selected':'')+'>Sort: cheapest first</option><option value="added"'+(ui.sort==='added'?' selected':'')+'>Sort: newest first</option></select></div>'+
+      '<div class="st-main"><div class="st-cards">'+cards(r)+'</div><div class="st-mapc panel'+(ui.pinFor?' pinning':'')+'"><div class="st-maph">'+I.pin+'<span>'+esc(r.label||'Stays')+' on the map</span><span class="st-sp"></span><label><input type="checkbox" data-a="allrows"'+(ui.allRows?' checked':'')+'>Other rows too</label></div><div id="st-map"></div><div class="st-maphint">'+(ui.pinFor?'Tap the map where this stay is.':'Tap a pin to find its card. The shaded circle is a 15 minute walk from Hoàn Kiếm Lake.')+'</div></div></div></div>';
+    b.innerHTML=h;b._pend=0;wire(b);setTimeout(drawMap,30)}
+  function plan(days){var tot=0,all=true;
+    var rows=D.rows.map(function(r){var p=r.pick&&D.stays.find(function(s){return s.id===r.pick});if(p&&priceOk(p,r))tot+=p.usd;else all=false;var n=nights(r);
+      var opt=function(arr,v){var o=arr.slice();if(o.indexOf(v)<0)o.push(v);o.sort();return o.map(function(d){return '<option value="'+d+'"'+(d===v?' selected':'')+'>'+esc(fd(d,true))+'</option>'}).join('')};
+      var cnt=staysOf(r.id).filter(function(s){return s.st!=='gone'}).length;
+      return '<div class="st-row'+(r.id===ui.row?' on':'')+'" data-row="'+r.id+'"><input class="st-in st-lab" data-a="label" value="'+esc(r.label)+'" placeholder="Area, e.g. Old Quarter" aria-label="Row name">'+
+        '<select class="st-sel st-ci" data-a="from" aria-label="Check in">'+opt(days.slice(0,-1),r.from)+'</select><span class="st-arrow">→</span><select class="st-sel st-co" data-a="to" aria-label="Check out">'+opt(days.slice(1),r.to)+'</select>'+
+        '<span class="st-n">'+n+' night'+(n===1?'':'s')+'</span><span class="st-pickt">'+(p?'<span class="st-muted">Our pick</span><b>'+esc(p.name)+'</b>':'<span class="st-muted">'+cnt+' option'+(cnt===1?'':'s')+', no pick yet</span>')+'</span>'+
+        (D.rows.length>1?'<button class="st-del" data-a="delrow" title="Remove this row" aria-label="Remove this row">'+I.x+'</button>':'<span></span>')+'</div>'});
+    // coverage of each night
+    var nn=days.slice(0,-1),cov=nn.map(function(d){return D.rows.filter(function(r){return d>=r.from&&d<r.to}).length});
+    var gaps=nn.filter(function(d,i){return !cov[i]}),dbl=nn.filter(function(d,i){return cov[i]>1});
+    var tlh='<div class="st-tl"><div class="st-tl-days" style="grid-template-columns:repeat('+nn.length+',1fr)">'+nn.map(function(d){return '<span class="st-tl-d">'+esc(fd(d,true).replace(/,.*/,''))+' '+dt(d).getUTCDate()+'</span>'}).join('')+'</div><div class="st-tl-days" style="grid-template-columns:repeat('+nn.length+',1fr)">'+cov.map(function(c){return '<span class="st-tl-c'+(c===1?' ok':c>1?' two':'')+'"></span>'}).join('')+'</div></div>';
+    var warn=(gaps.length?'<p class="st-warn">No stay yet for the night of '+gaps.map(function(d){return fd(d)}).join(', ')+'.</p>':'')+(dbl.length?'<p class="st-warn">Two rows cover the night of '+dbl.map(function(d){return fd(d)}).join(', ')+'.</p>':'');
+    return '<div class="panel"><div class="st-h"><h2>Our nights</h2><span class="st-muted">'+esc(tripLabel?tripLabel():'')+'</span><span class="st-sp"></span><button class="st-btn gh sm" data-a="addrow">'+I.plus+'Add a row of nights</button></div>'+
+      '<div class="st-rows">'+rows.join('')+'</div>'+tlh+warn+
+      '<div class="st-sum"><span>Stays picked: <b>'+D.rows.filter(function(r){return r.pick}).length+' of '+D.rows.length+'</b></span><span>Total for our picks: <b>'+(tot?money(tot):'–')+'</b>'+(all||!tot?'':' <span class="st-muted">(some prices missing)</span>')+'</span></div></div>'}
+  function addBox(r){var L=searchLinks(r),n=nights(r);
+    return '<div class="panel"><div class="st-h"><h2 style="font-size:17px">'+I.link+' Add a stay to “'+esc(r.label||'this row')+'” · '+esc(rng(r))+'</h2></div>'+
+      '<form class="st-paste" data-a="paste"><input class="st-in" type="url" name="u" placeholder="Paste a Booking.com or Airbnb link" required aria-label="Booking.com or Airbnb link"><button class="st-btn" type="submit">'+I.plus+'Add stay</button></form>'+
+      '<p class="st-msg" id="st-msg" role="status"></p>'+
+      '<div class="st-srch"><span class="st-muted">Find more for these '+n+' nights:</span><a class="st-btn gh sm" href="'+esc(L.bk)+'" target="_blank" rel="noopener"><span class="st-src bk">Booking.com</span>Search '+esc(rng(r))+'</a><a class="st-btn gh sm" href="'+esc(L.ab)+'" target="_blank" rel="noopener"><span class="st-src ab">Airbnb</span>Search '+esc(rng(r))+'</a></div></div>'}
+  function seg(r){var l=staysOf(r.id),c={all:l.filter(function(s){return s.st!=='gone'}).length,star:l.filter(function(s){return s.st==='star'}).length,gone:l.filter(function(s){return s.st==='gone'}).length};
+    return '<div class="st-seg">'+[['all','All'],['star','Shortlist'],['gone','Removed']].map(function(x){return '<button data-a="filter" data-v="'+x[0]+'" class="'+(ui.filter===x[0]?'on':'')+'">'+x[1]+' <i>'+c[x[0]]+'</i></button>'}).join('')+'</div>'}
+  function cards(r){var l=staysOf(r.id).filter(function(s){return ui.filter==='gone'?s.st==='gone':ui.filter==='star'?s.st==='star':s.st!=='gone'});
+    l.sort(function(a,b){if(r.pick===a.id)return -1;if(r.pick===b.id)return 1;
+      if(ui.sort==='price')return (priceOk(a,r)?a.usd:1e9)-(priceOk(b,r)?b.usd:1e9);
+      if(ui.sort==='walk')return (a.lat!=null?km(LAKE,[a.lat,a.lon]):99)-(b.lat!=null?km(LAKE,[b.lat,b.lon]):99);return (b.at||'').localeCompare(a.at||'')});
+    if(!l.length)return '<div class="st-empty">'+(ui.filter==='all'?'No stays in this row yet. Paste a Booking.com or Airbnb link above.':ui.filter==='star'?'Nothing shortlisted yet. Tap “Shortlist” on the ones you like.':'Nothing removed.')+'</div>';
+    return l.map(function(s){return card(s,r)}).join('')}
+  function card(s,r){var n=nights(r),pk=r.pick===s.id,ph=(s.photos||[]).filter(Boolean),pi=Math.min(ui.ph[s.id]||0,Math.max(0,ph.length-1));
+    var price=priceOk(s,r)?'<div class="st-price"><b>'+money(s.usd/n)+'</b><span>/ night</span><span>· '+money(s.usd)+' for '+n+' night'+(n===1?'':'s')+'</span></div>':
+      '<div class="st-price none">'+(s.usd>0?'Price was for other dates. Check again and type the new total.':'Type the total once you see it:')+'</div><form class="st-pin" data-a="price"><input class="st-in" type="number" min="0" step="any" name="p" placeholder="Total for '+n+' nights" aria-label="Total price"><select class="st-sel" name="c">'+Object.keys(window.fx||fx||{USD:1}).map(function(k){return '<option'+(k===dispCur?' selected':'')+'>'+k+'</option>'}).join('')+'</select><button class="st-btn sm" type="submit">Save</button></form>';
+    var me=mineTag();
+    var h='<div class="st-card'+(s.st==='star'?' st-isstar':'')+(pk?' st-ispick':'')+(s.st==='gone'?' st-isgone':'')+(ui.sel===s.id?' st-issel':'')+'" data-id="'+s.id+'" id="st-c-'+s.id+'">'+
+      '<div class="st-ph">'+I.bed+(ph.length?'<img src="'+esc(ph[pi])+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<span class="st-src '+s.src+'">'+srcName(s.src)+'</span><span class="st-num">'+numOf(s)+'</span>'+
+      (pk?'<span class="st-badge">♛ Our pick</span>':'')+'<button class="st-edbtn" data-a="edit" title="Edit details" aria-label="Edit details">'+I.edit+'</button>'+(ph.length>1?'<button class="st-pnav l" data-a="ph" data-d="-1" aria-label="Previous photo">‹</button><button class="st-pnav r" data-a="ph" data-d="1" aria-label="Next photo">›</button><span class="st-dots">'+ph.map(function(x,i){return '<b class="'+(i===pi?'on':'')+'"></b>'}).join('')+'</span>':'')+'</div>'+
+      '<div class="st-bd"><h3>'+esc(s.name||'Untitled stay')+'</h3><div class="st-addr">'+I.pin+'<span>'+esc(s.addr||'No address yet. Tap edit to add it.')+'</span></div>'+(walk(s)?'<div class="st-walk">'+esc(walk(s))+'</div>':'')+price+
+      '<a class="st-dated" href="'+esc(dated(s,r))+'" target="_blank" rel="noopener">'+I.cal+'Check price for '+esc(rng(r))+I.ext+'</a>'+
+      '<div class="st-foot"><button class="st-v a'+(s.va?' on':'')+'" data-a="vote" data-v="a" title="'+esc(nm('a'))+' likes it">'+esc(nm('a')[0])+'</button><button class="st-v b'+(s.vb?' on':'')+'" data-a="vote" data-v="b" title="'+esc(nm('b'))+' likes it">'+esc(nm('b')[0])+'</button><span class="st-sp"></span>'+
+      
+      (s.st==='gone'?'<button class="st-btn gh sm" data-a="restore">'+I.undo+'Restore</button>':
+        '<button class="st-btn gh sm'+(s.st==='star'?' on':'')+'" data-a="star">'+I.star+(s.st==='star'?'Shortlisted':'Shortlist')+'</button><button class="st-btn gh sm x" data-a="gone" title="Remove" aria-label="Remove">'+I.x+'</button>')+'</div>'+
+      (s.st==='star'?'<button class="st-btn '+(pk?'gh':'pk')+' sm" data-a="pick">'+I.crown+(pk?'Undo our pick':'Make this our stay for '+esc(rng(r)))+'</button>':'')+'</div>';
+    if(ui.edit===s.id)h+='<form class="st-edit" data-a="save"><label>Name<input class="st-in" name="name" value="'+esc(s.name)+'"></label><label>Address<input class="st-in" name="addr" value="'+esc(s.addr)+'"></label>'+
+      '<label>Photo links (one per line)<textarea class="st-in" name="photos" rows="3" style="height:auto;padding:8px 12px">'+esc(ph.join('\n'))+'</textarea></label>'+
+      '<label>Total price for '+n+' nights (US$)<input class="st-in" type="number" min="0" step="any" name="usd" value="'+(s.usd?Math.round(s.usd):'')+'"></label>'+
+      '<div class="st-er"><button class="st-btn sm" type="submit">Save</button><button class="st-btn gh sm" type="button" data-a="find">'+I.pin+'Find address on map</button><button class="st-btn gh sm" type="button" data-a="setpin">Tap the map instead</button><button class="st-btn gh sm x" type="button" data-a="del">Delete</button></div></form>';
+    return h+'</div>'}
+
+  /* ---------- events ---------- */
+  function msg(t,err){var m=document.getElementById('st-msg');if(m){m.textContent=t||'';m.className='st-msg'+(err?' err':'')}}
+  function stayOf(e){var c=e.target.closest('[data-id]');return c&&D.stays.find(function(s){return s.id===c.dataset.id})}
+  function wire(b){
+    b.onclick=function(e){var t=e.target.closest('[data-a]');var rw=e.target.closest('.st-row');
+      if(rw&&(!t||t.tagName!=='BUTTON')){if(ui.row!==rw.dataset.row&&!/INPUT|SELECT/.test(e.target.tagName)){ui.row=rw.dataset.row;ui.sel=null;ui.edit=null;render()}else ui.row=rw.dataset.row;return}
+      if(!t)return;var a=t.dataset.a,s=stayOf(e),r=cur();
+      if(a==='addrow'){var d=tripDays(),last=D.rows[D.rows.length-1],f=last&&last.to<d[d.length-1]?last.to:d[0];var nr={id:nid(),label:'',from:f,to:d[Math.min(d.length-1,d.indexOf(f)+2)]||d[d.length-1],pick:null};
+        if(last&&f===last.to){}else if(last&&nights(last)>1){var mid=d[Math.max(d.indexOf(last.from)+1,d.indexOf(last.to)-2)];nr.from=mid;nr.to=last.to;last.to=mid;}
+        D.rows.push(nr);ui.row=nr.id;save();render();setTimeout(function(){var i=document.querySelector('.st-row.on .st-lab');if(i)i.focus()},50);return}
+      if(a==='delrow'){var rr=row(rw.dataset.row);if(!confirm('Remove the row “'+(rr.label||rng(rr))+'” and its '+staysOf(rr.id).length+' stays?'))return;D.rows=D.rows.filter(function(x){return x!==rr});D.stays=D.stays.filter(function(x){return x.row!==rr.id});ui.row=D.rows[0].id;save();render();return}
+      if(a==='filter'){ui.filter=t.dataset.v;render();return}
+      if(!s)return;
+      if(a==='ph'){var n=(s.photos||[]).length;ui.ph[s.id]=((ui.ph[s.id]||0)+(+t.dataset.d)+n)%n;render();return}
+      if(a==='vote'){var k='v'+t.dataset.v;s[k]=!s[k];save();render();return}
+      if(a==='star'){s.st=s.st==='star'?'':'star';if(s.st!=='star'&&r.pick===s.id)r.pick=null;save();render();return}
+      if(a==='gone'){s.st='gone';if(r.pick===s.id)r.pick=null;save();render();return}
+      if(a==='restore'){s.st='';save();render();return}
+      if(a==='pick'){r.pick=r.pick===s.id?null:s.id;save();render();return}
+      if(a==='edit'){ui.edit=ui.edit===s.id?null:s.id;render();return}
+      if(a==='del'){if(!confirm('Delete '+(s.name||'this stay')+'?'))return;D.stays=D.stays.filter(function(x){return x!==s});if(r.pick===s.id)r.pick=null;ui.edit=null;save();render();return}
+      if(a==='setpin'){ui.pinFor=s.id;render();var m=document.getElementById('st-map');if(m)m.scrollIntoView({behavior:'smooth',block:'center'});return}
+      if(a==='find'){var f=t.closest('form'),q=f.addr.value.trim()||f.name.value.trim();if(!q)return;t.disabled=true;t.textContent='Looking…';
+        geocode(q+(isHanoi()&&!/hanoi|hà nội|ha noi/i.test(q)?', Hanoi':'')).then(function(g){if(!g){t.disabled=false;t.textContent='Not found. Try the street name';return}s.lat=g.lat;s.lon=g.lon;if(!f.addr.value.trim())s.addr=g.addr;else s.addr=f.addr.value.trim();s.name=f.name.value.trim()||s.name;save();ui.sel=s.id;render()},function(){t.disabled=false;t.textContent='Couldn’t search. Tap the map instead'});return}
+    };
+    b.onchange=function(e){var t=e.target,a=t.dataset.a;if(!a)return;var rw=t.closest('.st-row'),r=rw&&row(rw.dataset.row);
+      if(a==='label'&&r){r.label=t.value.trim();save();b._pend=0;t.blur();render();return}
+      if((a==='from'||a==='to')&&r){r[a]=t.value;if(r.to<=r.from){var d=tripDays();if(a==='from')r.to=d[Math.min(d.length-1,d.indexOf(r.from)+1)];else r.from=d[Math.max(0,d.indexOf(r.to)-1)]}ui.row=r.id;save();t.blur();render();return}
+      if(a==='sort'){ui.sort=t.value;t.blur();render();return}
+      if(a==='allrows'){ui.allRows=t.checked;drawMap();return}};
+    b.addEventListener('focusout',function(){setTimeout(function(){if(b._pend&&!(document.activeElement&&b.contains(document.activeElement)&&/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)))render()},120)});
+    b.onsubmit=function(e){e.preventDefault();var f=e.target,a=f.dataset.a,s=stayOf(e),r=cur();
+      if(a==='paste')return addLink(f.u.value,f);
+      if(a==='price'&&s){var v=parseFloat(f.p.value);if(!(v>0))return;s.usd=toUSD(v,f.c.value);s.priceFor=r.from+'|'+r.to;save();f.p.blur();render();return}
+      if(a==='save'&&s){s.name=f.name.value.trim();s.addr=f.addr.value.trim();s.photos=f.photos.value.split(/\s*\n\s*/).filter(function(x){return /^https?:\/\//.test(x)});var u=parseFloat(f.usd.value);if(u>0){s.usd=u;s.priceFor=r.from+'|'+r.to}else{s.usd=0}
+        ui.edit=null;var go=function(){save();document.activeElement&&document.activeElement.blur();render()};
+        if(s.addr&&s.lat==null){geocode(s.addr+(isHanoi()?', Hanoi':'')).then(function(g){if(g){s.lat=g.lat;s.lon=g.lon}go()},go)}else go();return}};
+  }
+  function addLink(v,f){var u=cleanUrl(v||'');if(!u){msg('That doesn’t look like a link. Copy it from the address bar or the Share button.',true);return}
+    var r=cur(),src=srcOf(u);if(D.stays.some(function(s){return s.row===r.id&&s.url===u})){msg('That one is already in this row.',true);return}
+    var s={id:nid(),row:r.id,url:u,src:src,name:guessName(u),addr:'',photos:[],lat:null,lon:null,usd:0,priceFor:'',st:'',va:false,vb:false,at:new Date().toISOString()};
+    D.stays.push(s);ui.filter='all';ui.sel=s.id;save();busy=true;f.u.value='';f.u.blur();render();msg('Reading the link…');
+    fetchMeta(u,src).catch(function(){return null}).then(function(m){if(m){if(m.name)s.name=m.name;if(m.img)s.photos=[m.img];s.area=m.area||''}
+      var q=(s.name||s.area)?(s.name||'')+(s.area?', '+s.area:''):'';
+      return (q?geocode(q+(isHanoi()?', Hanoi':'')).catch(function(){return null}):Promise.resolve(null)).then(function(g){
+        if(!g&&s.area)return geocode(s.area+(isHanoi()?', Hanoi':'')).catch(function(){return null});return g})
+      .then(function(g){if(g){s.lat=g.lat;s.lon=g.lon;s.addr=g.addr}
+        var miss=[];if(!s.name)miss.push('name');if(!s.photos.length)miss.push('photo');if(s.lat==null)miss.push('address');
+        busy=false;save();render();
+        msg(miss.length?'Added. I couldn’t read the '+miss.join(', ')+' from the link, so tap edit on the card to fill '+(miss.length>1?'them':'it')+' in. Then tap “Check price” on the card and type the total you see.':'Added. Now tap “Check price for '+rng(r)+'” on the card and type the total you see.',!!miss.length);
+        var c=document.getElementById('st-c-'+s.id);if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'})})})}
+
+  /* ---------- map ---------- */
+  function isDark(){var t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+  function tiles(){if(!map)return;tl.forEach(function(t){map.removeLayer(t)});tl=[];var E='https://server.arcgisonline.com/ArcGIS/rest/services/',A='Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
+    if(isDark()){tl.push(L.tileLayer(E+'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:16,attribution:A}));tl.push(L.tileLayer(E+'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:16,pane:'overlayPane'}))}
+    else tl.push(L.tileLayer(E+'World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:18,attribution:A}));tl.forEach(function(t){t.addTo(map)})}
+  function drawMap(){var host=document.getElementById('st-map');if(!host||!window.L)return;
+    if(map&&map.getContainer()!==host){map.remove();map=null}
+    if(!map){map=L.map(host,{zoomControl:true,scrollWheelZoom:false,zoomSnap:0.25,attributionControl:true});map.attributionControl.setPrefix('');tiles();mlayer=L.layerGroup().addTo(map);
+      map.on('click',function(e){if(!ui.pinFor)return;var s=D.stays.find(function(x){return x.id===ui.pinFor});ui.pinFor=null;if(s){s.lat=+e.latlng.lat.toFixed(6);s.lon=+e.latlng.lng.toFixed(6);ui.sel=s.id;save()}render()});
+      if(!drawMap.mo){drawMap.mo=1;new MutationObserver(function(){if(map)tiles()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})}}
+    mlayer.clearLayers();var r=cur(),pts=[];
+    if(isHanoi()){L.circle(LAKE,{radius:1100,className:'st-ring',interactive:false}).addTo(mlayer);
+      L.marker(LAKE,{interactive:false,icon:L.divIcon({className:'',html:'<div class="st-lm"><b>★</b>Hoàn Kiếm Lake</div>',iconSize:[0,0]})}).addTo(mlayer)}
+    D.stays.forEach(function(s){if(s.lat==null||s.st==='gone')return;var mine=s.row===r.id;if(!mine&&!ui.allRows)return;var rr=row(s.row)||r;
+      var c=!mine?'oth':rr.pick===s.id?'pk':s.st==='star'?'st':'';if(ui.sel===s.id)c+=' sel';
+      var lab=priceOk(s,rr)?money(s.usd/nights(rr)):(s.name||'Stay').slice(0,16);
+      var m=L.marker([s.lat,s.lon],{zIndexOffset:mine?(rr.pick===s.id?1000:s.st==='star'?500:100):0,icon:L.divIcon({className:'',html:'<div class="st-mk '+c+'" title="'+esc(s.name)+'"><i>'+(rr.pick===s.id?'♛':numOf(s))+'</i>'+esc(lab)+'</div>',iconSize:[0,0]})}).addTo(mlayer);
+      m.on('click',function(){if(!mine){ui.row=s.row}ui.sel=s.id;render();setTimeout(function(){var c=document.getElementById('st-c-'+s.id);if(c)c.scrollIntoView({behavior:'smooth',block:'center'})},60)});
+      if(mine)pts.push([s.lat,s.lon])});
+    setTimeout(function(){map.invalidateSize();var key=r.id+':'+pts.length;if(drawMap.k===key&&!ui.sel)return;drawMap.k=key;
+      if(ui.sel){var s=D.stays.find(function(x){return x.id===ui.sel});if(s&&s.lat!=null&&!map.getBounds().pad(-.1).contains([s.lat,s.lon])){map.panTo([s.lat,s.lon]);return}}
+      if(drawMap.k2===key)return;drawMap.k2=key;
+      if(pts.length>1)map.fitBounds(pts,{padding:[50,50],maxZoom:16});else if(pts.length)map.setView(pts[0],15);else map.setView(isHanoi()?[21.033,105.849]:(function(){try{return mpCenter()}catch(e){return [21.033,105.849]}})(),14)},40)}
+
+  /* ---------- hook in ---------- */
+  window.renderHotels=function(){try{render()}catch(e){console.error(e)}};
+  try{load()}catch(e){}
+  if(visible())setTimeout(window.renderHotels,0);
+})();
 </script></body></html>
