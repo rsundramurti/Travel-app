@@ -3414,7 +3414,7 @@ html.gl #us.us{overflow:visible;z-index:6}
 .us-msg[data-from="a"]{box-shadow:inset 3px 0 0 var(--ca);padding-left:8px}.us-msg[data-from="b"]{box-shadow:inset 3px 0 0 var(--cb);padding-left:8px}
 html.gl .us .us-write{align-self:flex-start;flex:none;font:inherit;font-size:.76rem;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid rgba(127,95,214,.28);background:rgba(255,255,255,.7);color:var(--accent,#7f5fd6);cursor:pointer}
 .us-pops{position:absolute;inset:0;pointer-events:none;z-index:20}
-.usb{position:absolute;bottom:calc(100% - 4px);pointer-events:auto;transform-origin:var(--tail,40px) 100%;animation:usb-in .75s cubic-bezier(.3,1.7,.5,1) both;color:#2a1f4a}
+.usb{position:absolute;bottom:calc(100% - 4px);pointer-events:auto;transform-origin:var(--tail,40px) 100%;animation:usb-in .75s cubic-bezier(.3,1.7,.5,1) backwards;color:#2a1f4a}
 .usb.out{animation:usb-out .38s ease-in both}
 @keyframes usb-in{0%{transform:scale(.2) translateY(34px);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
 @keyframes usb-out{to{transform:scale(.6) translateY(18px);opacity:0}}
@@ -3446,6 +3446,41 @@ html.gl[data-theme="dark"] .usb-d1,html.gl[data-theme="dark"] .usb-d2{background
 html.gl[data-theme="dark"] .us .us-write{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#d2c2ff}
 @media (prefers-reduced-motion:reduce){.usb,.usb.out{animation:none}}
 .us-hint{margin:0;flex:none;font-size:.74rem;font-weight:600;color:var(--accent,#7f5fd6)}
+/* stacking: newest on the cat, older bubbles rise, shrink and fade */
+.usb{transition:bottom .5s cubic-bezier(.3,1.35,.5,1),opacity .5s ease,scale .5s ease;scale:1}
+.usb[data-lvl="1"]{opacity:.82;scale:.95}.usb[data-lvl="2"]{opacity:.5;scale:.9}.usb[data-lvl="3"]{opacity:.2;scale:.85;pointer-events:none}.usb[data-lvl="4"]{opacity:0}
+.usb:not([data-lvl="0"]) .usb-d1,.usb:not([data-lvl="0"]) .usb-d2,.usb:not([data-lvl="0"]) .usb-tap{display:none}
+/* history button */
+html.gl .us .us-hist{align-self:flex-start;flex:none;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.76rem;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid rgba(127,95,214,.28);background:rgba(255,255,255,.7);color:var(--accent,#7f5fd6);cursor:pointer}
+/* history: a glass screen that rotates into view */
+.ush{--ca:#2f8f83;--cb:#e07a5f;border:0;padding:0;background:transparent;width:min(520px,calc(100vw - 24px));max-width:none;max-height:none;height:min(640px,calc(100dvh - 48px));overflow:visible;perspective:1400px;color:var(--ink,#241b3d)}
+.ush::backdrop{background:rgba(25,15,50,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ush[open]::backdrop{animation:ush-fade .45s ease both}.ush.out::backdrop{animation:ush-fade .4s ease reverse both}
+@keyframes ush-fade{from{opacity:0}to{opacity:1}}
+.ush-p{box-sizing:border-box;height:100%;display:flex;flex-direction:column;border-radius:30px;padding:18px 16px 12px;transform-origin:50% 50%;
+  background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(240,230,255,.74) 55%,rgba(255,224,240,.78));border:1.5px solid rgba(255,255,255,.9);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -14px 30px rgba(190,150,255,.18),0 30px 80px rgba(40,20,90,.35);-webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5)}
+.ush[open] .ush-p{animation:ush-in .7s cubic-bezier(.2,1.25,.4,1) both}.ush.out .ush-p{animation:ush-out .42s ease-in both}
+@keyframes ush-in{0%{transform:rotateY(-78deg) rotateX(8deg) scale(.86);opacity:0}45%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes ush-out{to{transform:rotateY(70deg) scale(.88);opacity:0}}
+.ush-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:0 4px 10px;border-bottom:1px solid rgba(127,95,214,.14)}
+.ush-h h2{margin:0;font-family:var(--f-display,Georgia,serif);font-size:1.35rem;font-weight:600}.ush-n{margin:2px 0 0;font-size:.78rem;color:var(--muted,#5d5578)}
+html.gl .ush .ush-x{flex:none;width:34px;height:34px;padding:0;border-radius:50%;border:1px solid rgba(127,95,214,.2);background:rgba(255,255,255,.6);color:var(--ink,#241b3d);font-size:1.25rem;line-height:1;cursor:pointer}
+.ush-l{flex:1;min-height:0;overflow-y:auto;padding:6px 4px 4px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin}
+.ush-d{display:flex;justify-content:center;margin:10px 0 2px}.ush-d span{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#5d5578);padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.6);border:1px solid rgba(127,95,214,.12)}
+.ush-m{display:flex;flex-direction:column;max-width:80%;gap:3px}.ush-m.l{align-self:flex-start;align-items:flex-start}.ush-m.r{align-self:flex-end;align-items:flex-end}
+.ush-b{padding:9px 13px;border-radius:20px;font-size:.92rem;line-height:1.35;font-weight:500;overflow-wrap:anywhere;background:linear-gradient(160deg,#fff,rgba(246,240,255,.95));border:1px solid rgba(255,255,255,.95);box-shadow:0 4px 12px rgba(80,40,150,.1)}
+.ush-m.l .ush-b{border-bottom-left-radius:6px;box-shadow:inset 3px 0 0 var(--ca),0 4px 12px rgba(80,40,150,.1)}.ush-m.r .ush-b{border-bottom-right-radius:6px;box-shadow:inset -3px 0 0 var(--cb),0 4px 12px rgba(80,40,150,.1)}
+.ush-b.big{font-size:1.8rem;line-height:1.1;padding:6px 12px;background:transparent;border-color:transparent;box-shadow:none!important}
+.ush-t{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--muted,#5d5578);padding:0 6px}.ush-t i{width:7px;height:7px;border-radius:50%}
+.ush-e{margin:auto;text-align:center;color:var(--muted,#5d5578);max-width:30ch}
+@media (max-width:620px){.ush{width:calc(100vw - 16px);height:calc(100dvh - 32px)}.ush-p{border-radius:26px}}
+@media (prefers-color-scheme:dark){html.gl:not([data-theme="light"]) .ush-p{background:linear-gradient(160deg,rgba(60,48,104,.8),rgba(44,32,82,.78) 55%,rgba(84,40,92,.8));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 30px 80px rgba(0,0,0,.5)}
+ html.gl:not([data-theme="light"]) .ush-b{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14);color:#f3eeff}html.gl:not([data-theme="light"]) .ush-d span,html.gl:not([data-theme="light"]) .ush .ush-x,html.gl:not([data-theme="light"]) .us .us-hist{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#e4dbff}}
+html.gl[data-theme="dark"] .ush-p{background:linear-gradient(160deg,rgba(60,48,104,.8),rgba(44,32,82,.78) 55%,rgba(84,40,92,.8));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 30px 80px rgba(0,0,0,.5)}
+html.gl[data-theme="dark"] .ush-b{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14);color:#f3eeff}html.gl[data-theme="dark"] .ush-d span,html.gl[data-theme="dark"] .ush .ush-x,html.gl[data-theme="dark"] .us .us-hist{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#e4dbff}
+@media (prefers-reduced-motion:reduce){.ush[open] .ush-p,.ush.out .ush-p{animation:none}.usb{transition:none}}
+.ush-b.big,.usb .usb-big{color:#e0457b}
 </style>
 <script>/* Jelly cat couple: the "Us" card in the page header.
    Two 3D jelly cats, one for each of you, that play together. Tap your own cat to write the other a note;
@@ -3487,10 +3522,11 @@ function mount(){var wrap=document.querySelector('.pagehead .wrap');if(!wrap||do
   card=el('section','us');card.id='us';card.setAttribute('aria-label','Your jelly cats');
   card.innerHTML='<div class="us-stage"><div class="us-still"><img alt=""><img alt=""></div><canvas class="us-cv" role="img" aria-label="Your two jelly cats. Tap your cat to send a note."></canvas></div>'+
    '<div class="us-tx"><div class="us-top"><span class="us-eye"></span><button type="button" class="us-gear" aria-label="Customise the cats"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Zm7.4-2.5a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.8 1.7 1l.4 2.5h4l.4-2.5c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6Z"/></svg></button></div>'+
-   '<p class="us-msg"></p><p class="us-meta"></p><p class="us-hint">Tap your own cat to send a note</p></div><div class="us-pops"></div>';
+   '<p class="us-msg"></p><p class="us-meta"></p><button type="button" class="us-hist" aria-label="Note history"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4M12 7v5l3 2"/></svg>History</button></div><div class="us-pops"></div>';
   wrap.appendChild(card);
   stage=card.querySelector('.us-stage');cv=card.querySelector('.us-cv');still=card.querySelector('.us-still');eyeb=card.querySelector('.us-eye');msg=card.querySelector('.us-msg');meta=card.querySelector('.us-meta');pops=card.querySelector('.us-pops');
   card.querySelector('.us-gear').onclick=openDlg;
+  card.querySelector('.us-hist').onclick=openHist;
   msg.onclick=function(){var l=notes[notes.length-1];if(l)showRecv(l,true)};
   document.addEventListener('pointerdown',function(e){if(cmp&&!cmp.contains(e.target)&&!cv.contains(e.target)&&true)closeCompose()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cmp)closeCompose()});
@@ -3507,18 +3543,21 @@ function anchor(w){var cr=card.getBoundingClientRect(),sr=stage.getBoundingClien
 function place(b,w){var cw=card.clientWidth,phone=innerWidth<760,bw=Math.min(phone?280:310,cw-(phone?8:0));b.style.width=bw+'px';
   var a=anchor(w),left=a[0]-(w==='a'?46:bw-46);left=Math.max(phone?4:-40,Math.min(left,cw-bw-(phone?4:-40)));
   b.style.left=Math.round(left)+'px';b.style.setProperty('--tail',Math.round(a[0]-left)+'px');b.dataset.from=w}
-function bubble(w,cls){var b=el('div','usb '+(cls||''));b.innerHTML='<div class="usb-bx"></div><i class="usb-d1"></i><i class="usb-d2"></i>';pops.appendChild(b);place(b,w);return b}
-function poof(b){if(!b||!b.isConnected)return;b.classList.add('out');setTimeout(function(){b.remove()},380)}
+function bubble(w,cls){var b=el('div','usb '+(cls||''));b.innerHTML='<div class="usb-bx"></div><i class="usb-d1"></i><i class="usb-d2"></i>';pops.appendChild(b);place(b,w);setTimeout(restack,0);return b}
+function poof(b){if(!b||!b.isConnected||b.classList.contains('out'))return;b.classList.add('out');setTimeout(function(){b.remove();restack()},380)}
+// several bubbles stack upward: the newest sits on the cat, older ones rise, shrink and fade, and the fifth one floats away
+function restack(){var bs=[].filter.call(pops.children,function(b){return !b.classList.contains('out')}),off=0;
+  for(var i=bs.length-1;i>=0;i--){var b=bs[i],lv=bs.length-1-i;b.dataset.lvl=Math.min(lv,4);b.style.bottom='calc(100% - 4px + '+off+'px)';off+=b.offsetHeight*(lv?(1-.05*lv):1)+10;if(lv>=4)poof(b)}}
 function who(w,t){var c=w==='a'?'var(--ca)':'var(--cb)';return '<div class="usb-who" style="color:'+c+'"><i style="background:'+c+'"></i>'+t+'</div>'}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 // a note from the other person pops out of their cat
-function showRecv(n,again){if(recvB)poof(recvB);if(cmp)closeCompose();var b=bubble(n.from,'recv'+(again?'':' new'));recvB=b;
+function showRecv(n,again){if(cmp)closeCompose(true);var b=bubble(n.from,'recv'+(again?'':' new'));recvB=b;
   b.querySelector('.usb-bx').innerHTML=who(n.from,esc(pname(n.from))+' · '+ago(n.at))+(big(n)?'<p class="usb-big">'+esc(said(n))+'</p>':'<p>'+esc(n.text)+'</p>')+(again?'':'<span class="usb-tap">Tap to say thanks ♥</span>');
   b.onclick=function(){markSeen();if(G3)G3.hearts(n.from);play('kiss',5.6);poof(b)};
-  clearTimeout(showRecv.t);showRecv.t=setTimeout(function(){if(isVisible())markSeen();setTimeout(function(){if(recvB===b)poof(b)},again?0:9000)},again?5000:8000)}
+  clearTimeout(showRecv.t);showRecv.t=setTimeout(function(){if(isVisible())markSeen()},8000);setTimeout(function(){poof(b)},again?6000:16000)}
 // tap your cat: a bubble pops out of it to write in
 // tap a cat to write from it: the left cat writes as traveller 1, the right cat as traveller 2 (no account needed)
-function toggleCompose(w){w=w||me||'a';if(cmp){var same=cmp.dataset.from===w;closeCompose(true);if(same)return}if(recvB)poof(recvB);
+function toggleCompose(w){w=w||me||'a';if(cmp){var same=cmp.dataset.from===w;closeCompose(true);if(same)return}
   if(me!==w){me=w;try{localStorage.setItem('glMe',w)}catch(e){}}
   var to=other(me);cmp=bubble(me,'cmp');
   cmp.querySelector('.usb-bx').innerHTML=who(me,'To '+esc(pname(to)))+'<button type="button" class="usb-x" aria-label="Close">×</button>'+
@@ -3529,7 +3568,7 @@ function toggleCompose(w){w=w||me||'a';if(cmp){var same=cmp.dataset.from===w;clo
   cmp.querySelector('.usb-st').onclick=function(e){var b=e.target.closest('button');if(!b)return;var s=b.dataset.s;send(s==='♥'?'heart':'sticker',s==='♥'?'':s)};
   cmp.querySelector('form').onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(v)send('note',v)};
   if(G3)G3.poke(me)}
-function closeCompose(now){if(!cmp)return;var b=cmp;cmp=null;if(now)b.remove();else poof(b);setTimeout(render,400)}
+function closeCompose(now){if(!cmp)return;var b=cmp;cmp=null;if(now){b.remove();restack()}else poof(b);setTimeout(render,400)}
 var shownPop='';
 function render(){if(!card)return;
   eyeb.textContent=pname('a')+' & '+pname('b');
@@ -3537,9 +3576,10 @@ function render(){if(!card)return;
   if(last){var p=pname(last.from);msg.textContent=last.kind==='heart'?p+' sent a heart ♥':last.kind==='sticker'?p+' sent '+last.text:p+': “'+last.text+'”';msg.dataset.from=last.from;
     meta.textContent=(un.length?'New · ':'')+ago(last.at)}
   else{msg.textContent='No notes yet.';msg.dataset.from='';meta.textContent='Tap your cat to send a note'}
-  var nu=un[un.length-1];if(nu&&shownPop!==nu.id&&!cmp){shownPop=nu.id;pop(nu)}}
+  if(!cmp){var fresh=un.filter(function(n){return !shownIds[n.id]}).slice(-4);fresh.forEach(function(n,i){shownIds[n.id]=1;setTimeout(function(){pop(n,i===fresh.length-1)},i*900)})}}
+var shownIds={};
 // a new note: the sender's cat gets excited and its bubble pops out
-function pop(n){play('excited',2.6,n.from);setTimeout(function(){showRecv(n)},450)}
+function pop(n,lastOne){if(lastOne)play('excited',2.6,n.from);setTimeout(function(){showRecv(n)},450)}
 function markSeen(){var un=unread();if(!un.length)return;un.forEach(function(n){n.seen=true;if(db)try{db.doc('couplenotes/'+n.id).update({seen:true,seenAt:new Date().toISOString()})}catch(e){}});if(!db)saveLocal();render()}
 function send(kind,text){if(!me)return;var n={from:me,kind:kind,text:text,at:new Date().toISOString(),seen:false};
   if(db){try{db.collection('couplenotes').add(n)}catch(e){}}else{n.id='l'+Date.now();notes.push(n);saveLocal();render()}
@@ -3558,8 +3598,25 @@ function startData(){
   if(!window.claude||!claude.use){local();return}
   claude.use('db').then(function(d){db=d;if(!d){local();return}
     ['a','b'].forEach(function(w){d.doc('couple/cat-'+w).onSnapshot(function(s){gotCat(w,s&&s.exists?s.data():null)})});
-    d.collection('couplenotes').onSnapshot(function(s){notes=s.docs.map(function(x){return Object.assign({},x.data(),{id:x.id})}).filter(function(n){return n&&n.at}).sort(function(a,b){return a.at<b.at?-1:1});render()})},function(){local()})}
+    d.collection('couplenotes').onSnapshot(function(s){notes=s.docs.map(function(x){return Object.assign({},x.data(),{id:x.id})}).filter(function(n){return n&&n.at}).sort(function(a,b){return a.at<b.at?-1:1});render();if(hist&&hist.open)fillHist()})},function(){local()})}
 setInterval(function(){render()},60000);
+
+// ---------- note history: a glass screen that rotates into view ----------
+var hist;
+function dayLabel(d){var t=new Date(),y=new Date(t);y.setDate(t.getDate()-1);var f=d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+  return d.toDateString()===t.toDateString()?'Today · '+f:d.toDateString()===y.toDateString()?'Yesterday · '+f:d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:d.getFullYear()===t.getFullYear()?undefined:'numeric'})}
+function openHist(){if(!hist){hist=el('dialog','ush');hist.setAttribute('aria-label','Note history');
+    hist.innerHTML='<div class="ush-p"><div class="ush-h"><div><h2>Our notes</h2><p class="ush-n"></p></div><button type="button" class="ush-x" aria-label="Close">×</button></div><div class="ush-l" tabindex="0"></div></div>';
+    document.body.appendChild(hist);hist.querySelector('.ush-x').onclick=closeHist;hist.addEventListener('cancel',function(e){e.preventDefault();closeHist()});
+    hist.addEventListener('click',function(e){if(e.target===hist)closeHist()})}
+  fillHist();hist.classList.remove('out');if(hist.showModal)hist.showModal();else hist.setAttribute('open','');var l=hist.querySelector('.ush-l');l.scrollTop=l.scrollHeight}
+function closeHist(){hist.classList.add('out');setTimeout(function(){hist.classList.remove('out');if(hist.close)hist.close();else hist.removeAttribute('open')},420)}
+function fillHist(){if(!hist)return;var l=hist.querySelector('.ush-l'),day='',h='';
+  hist.querySelector('.ush-n').textContent=notes.length?notes.length+(notes.length===1?' note':' notes')+' between '+pname('a')+' and '+pname('b'):'';
+  notes.forEach(function(n){var d=new Date(n.at),k=d.toDateString();if(k!==day){day=k;h+='<div class="ush-d"><span>'+esc(dayLabel(d))+'</span></div>'}
+    var t=d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}),side=n.from==='a'?'l':'r';
+    h+='<div class="ush-m '+side+'"><div class="ush-b'+(big(n)?' big':'')+'">'+(big(n)?esc(said(n)):esc(n.text))+'</div><div class="ush-t"><i style="background:var(--c'+n.from+')"></i>'+esc(pname(n.from))+' · '+t+(n.seen?' · Seen':'')+'</div></div>'});
+  l.innerHTML=h||'<p class="ush-e">No notes yet. Tap your cat on the card to send the first one.</p>'}
 
 // ---------- customise dialog ----------
 var dWho='a';
