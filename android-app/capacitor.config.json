@@ -1,0 +1,7 @@
+{
+  "appId": "app.ourhanoijourney.board",
+  "appName": "Our Hanoi Journey",
+  "webDir": "www",
+  "server": { "url": "", "cleartext": false },
+  "android": { "backgroundColor": "#f1ecfa" }
+}
