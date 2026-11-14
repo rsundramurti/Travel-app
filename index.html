@@ -3407,6 +3407,45 @@ html.gl[data-theme="dark"] .usd{background:#211a3a}
 html.gl .usd{background:#fbf9ff}html.gl .usd .usd-done{background:#7f5fd6!important;color:#fff!important;box-shadow:0 8px 20px rgba(127,95,214,.3)}
 html.gl .us .us-send{background:#7f5fd6!important;color:#fff!important}html.gl .us .us-heart{background:#ffe1ec!important;color:#e0457b!important}
 @media (prefers-color-scheme:dark){html.gl:not([data-theme="light"]) .usd{background:#211a3a}}html.gl[data-theme="dark"] .usd{background:#211a3a}
+/* jelly glass pop-out bubbles (Ray's pick, 14 Nov): they float above the card from the sender's cat */
+html.gl #us.us{overflow:visible;z-index:6}
+.us-tx{gap:4px}
+.us-msg{margin:0;font-size:.86rem;font-weight:500;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;cursor:pointer}
+.us-msg[data-from="a"]{box-shadow:inset 3px 0 0 var(--ca);padding-left:8px}.us-msg[data-from="b"]{box-shadow:inset 3px 0 0 var(--cb);padding-left:8px}
+html.gl .us .us-write{align-self:flex-start;flex:none;font:inherit;font-size:.76rem;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid rgba(127,95,214,.28);background:rgba(255,255,255,.7);color:var(--accent,#7f5fd6);cursor:pointer}
+.us-pops{position:absolute;inset:0;pointer-events:none;z-index:20}
+.usb{position:absolute;bottom:calc(100% - 4px);pointer-events:auto;transform-origin:var(--tail,40px) 100%;animation:usb-in .75s cubic-bezier(.3,1.7,.5,1) both;color:#2a1f4a}
+.usb.out{animation:usb-out .38s ease-in both}
+@keyframes usb-in{0%{transform:scale(.2) translateY(34px);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes usb-out{to{transform:scale(.6) translateY(18px);opacity:0}}
+.usb-bx{position:relative;padding:12px 15px 13px;border-radius:26px;background:linear-gradient(160deg,rgba(255,255,255,.97),rgba(238,226,255,.96) 55%,rgba(255,218,238,.97));border:1.5px solid rgba(255,255,255,.95);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -8px 18px rgba(190,150,255,.25),0 16px 36px rgba(110,60,190,.28);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.usb-bx::before{content:"";position:absolute;left:16px;right:42%;top:5px;height:10px;border-radius:999px;background:linear-gradient(rgba(255,255,255,.95),rgba(255,255,255,0));pointer-events:none}
+.usb-d1,.usb-d2{position:absolute;border-radius:50%;background:linear-gradient(160deg,#fff,#efe2ff);border:1.5px solid #fff;box-shadow:0 4px 10px rgba(110,60,190,.25)}
+.usb-d1{width:16px;height:16px;left:calc(var(--tail) - 8px);bottom:-22px}.usb-d2{width:10px;height:10px;left:calc(var(--tail) - 3px);bottom:-40px}
+.usb-who{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.usb-who i{width:8px;height:8px;border-radius:50%}
+.usb p{margin:3px 0 0;font-size:.98rem;line-height:1.32;font-weight:600;overflow-wrap:anywhere}
+.usb .usb-big{font-size:2rem;line-height:1.1;margin-top:4px}
+.usb-tap{display:block;margin-top:6px;font-size:.72rem;font-weight:600;color:#a0579a;opacity:.85}
+.usb.recv{cursor:pointer}.usb.new .usb-bx::after{content:"";position:absolute;right:-3px;top:-3px;width:11px;height:11px;border-radius:50%;background:#ff5d8f;box-shadow:0 0 0 2px #fff}
+html.gl .usb .usb-x{position:absolute;right:8px;top:6px;width:26px;height:26px;padding:0;border-radius:50%;border:0;background:transparent;color:#8a80a8;font-size:1.1rem;line-height:1;cursor:pointer}
+.usb-st{display:flex;gap:5px;margin-top:9px}
+html.gl .usb .usb-st button{flex:1 1 0;min-width:0;height:32px;padding:0;font-size:1.05rem;border-radius:999px;border:1px solid rgba(127,95,214,.2);background:rgba(255,255,255,.8);color:#e0457b;cursor:pointer;transition:transform .2s cubic-bezier(.3,1.7,.5,1)}
+html.gl .usb .usb-st button:active{transform:scale(.88)}
+.usb-in{display:flex;gap:6px;margin-top:8px}
+.usb-in input{flex:1;min-width:0;font:inherit;font-size:.95rem;padding:9px 13px;border-radius:999px;border:1px solid rgba(127,95,214,.25);background:#fff;color:#241b3d}
+html.gl .usb .usb-go{flex:none;width:40px;height:40px;padding:0;border-radius:50%;border:0;background:#7f5fd6;color:#fff;font-size:1.05rem;display:grid;place-items:center;box-shadow:0 6px 14px rgba(127,95,214,.35);cursor:pointer}
+.usb-q{font-size:.9rem!important}.usb-me{display:flex;gap:6px;margin-top:8px}
+html.gl .usb .usb-me button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:600;font-size:.88rem;padding:8px;border-radius:999px;border:1px solid rgba(127,95,214,.25);background:#fff;color:#241b3d;cursor:pointer}
+.usb-me i{width:9px;height:9px;border-radius:50%}
+@media (prefers-color-scheme:dark){html.gl:not([data-theme="light"]) .usb{color:#f3eeff}html.gl:not([data-theme="light"]) .usb-bx{background:linear-gradient(160deg,rgba(78,62,128,.97),rgba(64,44,108,.97) 55%,rgba(110,52,110,.97));border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 16px 36px rgba(0,0,0,.45)}
+ html.gl:not([data-theme="light"]) .usb-d1,html.gl:not([data-theme="light"]) .usb-d2{background:linear-gradient(160deg,#6a5aa8,#4c3a86);border-color:rgba(255,255,255,.3)}html.gl:not([data-theme="light"]) .usb-bx::before{opacity:.35}html.gl:not([data-theme="light"]) .usb-tap{color:#ffb3d6}
+ html.gl:not([data-theme="light"]) .us .us-write{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#d2c2ff}}
+html.gl[data-theme="dark"] .usb{color:#f3eeff}html.gl[data-theme="dark"] .usb-bx{background:linear-gradient(160deg,rgba(78,62,128,.97),rgba(64,44,108,.97) 55%,rgba(110,52,110,.97));border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 16px 36px rgba(0,0,0,.45)}
+html.gl[data-theme="dark"] .usb-d1,html.gl[data-theme="dark"] .usb-d2{background:linear-gradient(160deg,#6a5aa8,#4c3a86);border-color:rgba(255,255,255,.3)}html.gl[data-theme="dark"] .usb-bx::before{opacity:.35}html.gl[data-theme="dark"] .usb-tap{color:#ffb3d6}
+html.gl[data-theme="dark"] .us .us-write{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#d2c2ff}
+@media (prefers-reduced-motion:reduce){.usb,.usb.out{animation:none}}
+.us-hint{margin:0;flex:none;font-size:.74rem;font-weight:600;color:var(--accent,#7f5fd6)}
 </style>
 <script>/* Jelly cat couple: the "Us" card in the page header.
    Two 3D jelly cats, one for each of you, that play together. Tap your own cat to write the other a note;
@@ -3442,48 +3481,70 @@ function ago(t){var s=(Date.now()-new Date(t).getTime())/1000;if(!(s>=0))return 
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 
 // ---------- the card ----------
-var card,stage,cv,still,eyeb,bub,msg,more,meta,form,inp,pick,dlg;
+// Notes are not a chat: they pop out above the card as jelly glass speech bubbles from the sender's cat.
+var card,stage,cv,still,eyeb,msg,meta,pops,dlg,cmp=null,recvB=null;
 function mount(){var wrap=document.querySelector('.pagehead .wrap');if(!wrap||document.getElementById('us'))return false;
   card=el('section','us');card.id='us';card.setAttribute('aria-label','Your jelly cats');
-  card.innerHTML='<div class="us-stage"><div class="us-still"><img alt=""><img alt=""></div><canvas class="us-cv" role="img" aria-label="Your two jelly cats"></canvas></div>'+
+  card.innerHTML='<div class="us-stage"><div class="us-still"><img alt=""><img alt=""></div><canvas class="us-cv" role="img" aria-label="Your two jelly cats. Tap your cat to send a note."></canvas></div>'+
    '<div class="us-tx"><div class="us-top"><span class="us-eye"></span><button type="button" class="us-gear" aria-label="Customise the cats"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Zm7.4-2.5a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.8 1.7 1l.4 2.5h4l.4-2.5c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6Z"/></svg></button></div>'+
-   '<div class="us-bub"><p class="us-msg"></p><span class="us-more"></span></div>'+
-   '<p class="us-meta"></p>'+
-   '<form class="us-form" hidden><input type="text" maxlength="140" enterkeyhint="send" autocomplete="off"><button type="button" class="us-heart" aria-label="Send a heart">♥</button><button type="submit" class="us-send">Send</button></form>'+
-   '<div class="us-pick" hidden><span>Which cat is yours?</span><button type="button" data-w="a"></button><button type="button" data-w="b"></button></div></div>';
+   '<p class="us-msg"></p><p class="us-meta"></p><p class="us-hint">Tap your own cat to send a note</p></div><div class="us-pops"></div>';
   wrap.appendChild(card);
-  stage=card.querySelector('.us-stage');cv=card.querySelector('.us-cv');still=card.querySelector('.us-still');eyeb=card.querySelector('.us-eye');bub=card.querySelector('.us-bub');msg=card.querySelector('.us-msg');more=card.querySelector('.us-more');
-  meta=card.querySelector('.us-meta');form=card.querySelector('.us-form');inp=form.querySelector('input');pick=card.querySelector('.us-pick');
+  stage=card.querySelector('.us-stage');cv=card.querySelector('.us-cv');still=card.querySelector('.us-still');eyeb=card.querySelector('.us-eye');msg=card.querySelector('.us-msg');meta=card.querySelector('.us-meta');pops=card.querySelector('.us-pops');
   card.querySelector('.us-gear').onclick=openDlg;
-  bub.onclick=function(){markSeen()};
-  pick.onclick=function(e){var b=e.target.closest('button');if(!b)return;setMe(b.dataset.w);pick.hidden=true;compose(true)};
-  form.onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(!v)return;send('note',v);inp.value='';compose(false)};
-  form.querySelector('.us-heart').onclick=function(){send('heart','');compose(false)};
-  inp.onkeydown=function(e){if(e.key==='Escape')compose(false)};
+  msg.onclick=function(){var l=notes[notes.length-1];if(l)showRecv(l,true)};
+  document.addEventListener('pointerdown',function(e){if(cmp&&!cmp.contains(e.target)&&!cv.contains(e.target)&&true)closeCompose()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cmp)closeCompose()});
+  addEventListener('resize',function(){[cmp,recvB].forEach(function(b){if(b&&b.isConnected)place(b,b.dataset.from)})});
   stillImg();render();return true}
 function stillImg(){if(!still)return;var im=still.querySelectorAll('img');im[0].src=THUMB[cfg.a.breed]||'';im[1].src=THUMB[cfg.b.breed]||''}
 function setMe(w){me=w;try{localStorage.setItem('glMe',w)}catch(e){}render()}
-function compose(on){if(on&&!me){pick.hidden=false;meta.hidden=true;form.hidden=true;return}
-  form.hidden=!on;meta.hidden=on;pick.hidden=true;if(on){inp.placeholder='Note for '+pname(other(me));setTimeout(function(){inp.focus()},30)}}
 function unread(){return me?notes.filter(function(n){return n.from!==me&&!n.seen}):[]}
+function said(n){return n.kind==='heart'?'♥':n.text||''}
+function big(n){return n.kind==='heart'||n.kind==='sticker'}
+// where a cat's head is, in card coordinates
+function anchor(w){var cr=card.getBoundingClientRect(),sr=stage.getBoundingClientRect(),p=G3&&G3.anchor?G3.anchor(w):null;
+  return p?[sr.left-cr.left+p[0],sr.top-cr.top+p[1]]:[sr.left-cr.left+sr.width*(w==='a'?.3:.7),sr.top-cr.top+sr.height*.35]}
+function place(b,w){var cw=card.clientWidth,phone=innerWidth<760,bw=Math.min(phone?280:310,cw-(phone?8:0));b.style.width=bw+'px';
+  var a=anchor(w),left=a[0]-(w==='a'?46:bw-46);left=Math.max(phone?4:-40,Math.min(left,cw-bw-(phone?4:-40)));
+  b.style.left=Math.round(left)+'px';b.style.setProperty('--tail',Math.round(a[0]-left)+'px');b.dataset.from=w}
+function bubble(w,cls){var b=el('div','usb '+(cls||''));b.innerHTML='<div class="usb-bx"></div><i class="usb-d1"></i><i class="usb-d2"></i>';pops.appendChild(b);place(b,w);return b}
+function poof(b){if(!b||!b.isConnected)return;b.classList.add('out');setTimeout(function(){b.remove()},380)}
+function who(w,t){var c=w==='a'?'var(--ca)':'var(--cb)';return '<div class="usb-who" style="color:'+c+'"><i style="background:'+c+'"></i>'+t+'</div>'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+// a note from the other person pops out of their cat
+function showRecv(n,again){if(recvB)poof(recvB);if(cmp)closeCompose();var b=bubble(n.from,'recv'+(again?'':' new'));recvB=b;
+  b.querySelector('.usb-bx').innerHTML=who(n.from,esc(pname(n.from))+' · '+ago(n.at))+(big(n)?'<p class="usb-big">'+esc(said(n))+'</p>':'<p>'+esc(n.text)+'</p>')+(again?'':'<span class="usb-tap">Tap to say thanks ♥</span>');
+  b.onclick=function(){markSeen();if(G3)G3.hearts(n.from);play('kiss',5.6);poof(b)};
+  clearTimeout(showRecv.t);showRecv.t=setTimeout(function(){if(isVisible())markSeen();setTimeout(function(){if(recvB===b)poof(b)},again?0:9000)},again?5000:8000)}
+// tap your cat: a bubble pops out of it to write in
+// tap a cat to write from it: the left cat writes as traveller 1, the right cat as traveller 2 (no account needed)
+function toggleCompose(w){w=w||me||'a';if(cmp){var same=cmp.dataset.from===w;closeCompose(true);if(same)return}if(recvB)poof(recvB);
+  if(me!==w){me=w;try{localStorage.setItem('glMe',w)}catch(e){}}
+  var to=other(me);cmp=bubble(me,'cmp');
+  cmp.querySelector('.usb-bx').innerHTML=who(me,'To '+esc(pname(to)))+'<button type="button" class="usb-x" aria-label="Close">×</button>'+
+   '<div class="usb-st" role="group" aria-label="Send a sticker">'+['♥','😘','🍜','✈️','🌸'].map(function(s){return '<button type="button" data-s="'+s+'">'+s+'</button>'}).join('')+'</div>'+
+   '<form class="usb-in"><input type="text" maxlength="140" enterkeyhint="send" autocomplete="off" aria-label="Note for '+esc(pname(to))+'" placeholder="Say something cute"><button type="submit" class="usb-go" aria-label="Send">➤</button></form>';
+  var inp=cmp.querySelector('input');setTimeout(function(){try{inp.focus({preventScroll:true})}catch(e){}},60);
+  cmp.querySelector('.usb-x').onclick=function(){closeCompose()};
+  cmp.querySelector('.usb-st').onclick=function(e){var b=e.target.closest('button');if(!b)return;var s=b.dataset.s;send(s==='♥'?'heart':'sticker',s==='♥'?'':s)};
+  cmp.querySelector('form').onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(v)send('note',v)};
+  if(G3)G3.poke(me)}
+function closeCompose(now){if(!cmp)return;var b=cmp;cmp=null;if(now)b.remove();else poof(b);setTimeout(render,400)}
 var shownPop='';
 function render(){if(!card)return;
   eyeb.textContent=pname('a')+' & '+pname('b');
-  var pb=pick.querySelectorAll('button');pb[0].textContent=pname('a');pb[1].textContent=pname('b');
-  var un=unread(),last=un.length?un[un.length-1]:notes[notes.length-1];
-  if(last){bub.hidden=false;var who=pname(last.from);msg.textContent=last.kind==='heart'?who+' sent you a heart ♥':last.kind==='boop'?who+' booped you':who+': “'+last.text+'”';
-    bub.dataset.from=last.from;bub.classList.toggle('new',!!un.length);more.textContent=un.length>1?'+'+(un.length-1)+' more':'';
-    meta.textContent=ago(last.at)+(un.length?' · tap to read':me?' · tap your cat to reply':' · tap your cat');
-    if(un.length&&shownPop!==last.id){shownPop=last.id;pop(last)}}
-  else{bub.hidden=false;bub.dataset.from='';bub.classList.remove('new');more.textContent='';msg.textContent='No notes yet.';meta.textContent='Tap your cat to send the first one'}}
-// the speech bubble pops up; the sender's cat gets excited
-function pop(n){bub.classList.remove('pop');void bub.offsetWidth;bub.classList.add('pop');play('excited',3,n.from);setTimeout(function(){play(n.kind==='heart'?'kiss':'hello',5.6)},3100);
-  clearTimeout(pop.t);pop.t=setTimeout(function(){if(isVisible())markSeen()},7000)}
+  var un=unread(),last=notes[notes.length-1];
+  if(last){var p=pname(last.from);msg.textContent=last.kind==='heart'?p+' sent a heart ♥':last.kind==='sticker'?p+' sent '+last.text:p+': “'+last.text+'”';msg.dataset.from=last.from;
+    meta.textContent=(un.length?'New · ':'')+ago(last.at)}
+  else{msg.textContent='No notes yet.';msg.dataset.from='';meta.textContent='Tap your cat to send a note'}
+  var nu=un[un.length-1];if(nu&&shownPop!==nu.id&&!cmp){shownPop=nu.id;pop(nu)}}
+// a new note: the sender's cat gets excited and its bubble pops out
+function pop(n){play('excited',2.6,n.from);setTimeout(function(){showRecv(n)},450)}
 function markSeen(){var un=unread();if(!un.length)return;un.forEach(function(n){n.seen=true;if(db)try{db.doc('couplenotes/'+n.id).update({seen:true,seenAt:new Date().toISOString()})}catch(e){}});if(!db)saveLocal();render()}
 function send(kind,text){if(!me)return;var n={from:me,kind:kind,text:text,at:new Date().toISOString(),seen:false};
   if(db){try{db.collection('couplenotes').add(n)}catch(e){}}else{n.id='l'+Date.now();notes.push(n);saveLocal();render()}
-  play(kind==='heart'?'kiss':'jump',kind==='heart'?5.6:2,kind==='heart'?null:me);
-  // keep the last 40 notes
+  closeCompose(true);var b=bubble(me,'sent');b.querySelector('.usb-bx').innerHTML=who(me,'Sent to '+esc(pname(other(me))))+(big(n)?'<p class="usb-big">'+esc(said(n))+'</p>':'<p>'+esc(text)+'</p>');setTimeout(function(){poof(b)},2600);
+  play(kind==='note'?'jump':'kiss',kind==='note'?2:5.6,kind==='note'?me:null);
   if(db&&notes.length>40)notes.slice(0,notes.length-40).forEach(function(x){try{db.doc('couplenotes/'+x.id).delete()}catch(e){}})}
 function saveLocal(){try{localStorage.setItem('glCouple',JSON.stringify({cfg:cfg,notes:notes.slice(-40)}))}catch(e){}}
 function saveCat(w){if(db){try{db.doc('couple/cat-'+w).set(cfg[w])}catch(e){}}else saveLocal()}
@@ -3498,11 +3559,11 @@ function startData(){
   claude.use('db').then(function(d){db=d;if(!d){local();return}
     ['a','b'].forEach(function(w){d.doc('couple/cat-'+w).onSnapshot(function(s){gotCat(w,s&&s.exists?s.data():null)})});
     d.collection('couplenotes').onSnapshot(function(s){notes=s.docs.map(function(x){return Object.assign({},x.data(),{id:x.id})}).filter(function(n){return n&&n.at}).sort(function(a,b){return a.at<b.at?-1:1});render()})},function(){local()})}
-setInterval(function(){if(card&&!form.hidden)return;render()},60000);
+setInterval(function(){render()},60000);
 
 // ---------- customise dialog ----------
 var dWho='a';
-function openDlg(){if(!dlg)makeDlg();dWho=me||'a';syncDlg();dlg.querySelector('.usd-stage').appendChild(stage);if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');if(G3)G3.size();play('hello',3.2)}
+function openDlg(){if(!dlg)makeDlg();closeCompose(true);if(recvB)recvB.remove();dWho=me||'a';syncDlg();dlg.querySelector('.usd-stage').appendChild(stage);if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');if(G3)G3.size();play('hello',3.2)}
 function closeDlg(){card.insertBefore(stage,card.firstChild);if(dlg.close)dlg.close();else dlg.removeAttribute('open');if(G3)G3.size()}
 function makeDlg(){dlg=el('dialog','usd');dlg.setAttribute('aria-label','Customise the cats');
   var eyes=EYES.map(function(e){return '<button type="button" data-v="'+e[0]+'">'+(e[2]?'<i style="background:'+e[2]+'"></i>':'')+e[1]+'</button>'}).join('');
@@ -3663,13 +3724,13 @@ cv.addEventListener('click',function(e){var r=cv.getBoundingClientRect();mouse.s
   var hit=null;CATS.forEach(function(c){if(!hit&&ray.intersectObject(c.body)[0])hit=c});
   if(!hit){var x=(e.clientX-r.left)/r.width;hit=x<.5?CA:CB}
   poke(hit);if(dlg&&dlg.open){dWho=hit.w;syncDlg();return}
-  if(!me||hit.w===me)compose(form.hidden);else play('boop',4.4)});
+  toggleCompose(hit.w)});
 var last=performance.now(),vis=true;
 if(window.IntersectionObserver)new IntersectionObserver(function(es){vis=es[0].isIntersecting}).observe(cv);
 function frame(now){requestAnimationFrame(frame);var dt=Math.min(.033,(now-last)/1000);last=now;if(document.hidden||(!vis&&!(dlg&&dlg.open)))return;
   clock+=dt;script(clock);CATS.forEach(function(c){KEYS.forEach(function(k){step(c.P[k],reduce?dt*.5:dt)});apply(c,clock)});fxStep(dt);R.render(S,cam)}
 requestAnimationFrame(frame);
-return {play:play,size:size,rebuild:function(w){var c=w==='a'?CA:CB;build(c,cfg[w])},poke:function(w){poke(w==='a'?CA:CB)}}}
+return {anchor:function(w){var c=w==='a'?CA:CB;var v=new T.Vector3(c.P.x.v,FLOOR+(TOP-FLOOR)*(c.size||1)*.9,0).project(cam);return [(v.x+1)/2*cv.clientWidth,(1-v.y)/2*cv.clientHeight]},hearts:function(w){var c=w==='a'?CA:CB;fx(HEART,c.P.x.v,1.2,.9,.4,.7,0);fx(HEART,c.P.x.v-.3,1,.8,.22,.6,-.2)},play:play,size:size,rebuild:function(w){var c=w==='a'?CA:CB;build(c,cfg[w])},poke:function(w){poke(w==='a'?CA:CB)}}}
 
 // ---------- start ----------
 function init(){if(!mount())return;startData();
