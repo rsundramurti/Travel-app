@@ -3385,7 +3385,7 @@ html.gl .usd .usd-seg button[aria-pressed="true"]{background:#fff;color:var(--in
 .usd-sw{display:flex;flex-wrap:wrap;gap:8px}
 html.gl .usd .usd-sw button{width:30px;height:30px;min-width:0;min-height:0;padding:0;border-radius:50%;border:2px solid #fff;background:var(--sw);box-shadow:0 0 0 1px rgba(60,30,100,.15),inset 0 -4px 8px rgba(0,0,0,.12);cursor:pointer}
 html.gl .usd .usd-sw button[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--accent,#7f5fd6),inset 0 -4px 8px rgba(0,0,0,.12)}
-.usd-chips{display:flex;flex-wrap:wrap;gap:6px}
+.usd-chips{display:flex;flex-wrap:wrap;gap:6px}.usd-col.fixed{opacity:.4}
 html.gl .usd .usd-chips button{font:inherit;font-size:.8rem;font-weight:600;min-height:0;padding:6px 12px;border-radius:999px;border:1px solid rgba(127,95,214,.22);background:#fff;color:var(--ink);cursor:pointer;box-shadow:none}
 html.gl .usd .usd-chips button[aria-pressed="true"]{border-color:var(--accent,#7f5fd6);box-shadow:inset 0 0 0 1px var(--accent,#7f5fd6)}
 .usd-sec h3{margin:14px 0 8px;font-family:var(--f-display);font-size:1.02rem;font-weight:600}.usd-sec h3 small{font-family:var(--f-body,inherit);font-size:.76rem;font-weight:500;color:var(--muted,#5d5578);margin-left:6px}
@@ -3492,15 +3492,15 @@ var COLS={ginger:['Ginger','#f08a3e'],cream:['Cream','#f1d9b5'],snow:['Snow','#f
 var ECOL={amber:['Amber','#e8a92c'],green:['Green','#5cb85c'],blue:['Blue','#3d8fe0'],copper:['Copper','#c86a2e'],hazel:['Hazel','#9a7a34'],violet:['Violet','#9060d0'],ink:['Ink','#2a0816']};
 var OPT={
   body:[['lantern','Lantern'],['fur','Furry cat']],
-  pat:[['solid','Solid'],['tabby','Striped tabby'],['swirl','Swirl tabby'],['spotted','Spotted'],['tuxedo','Tuxedo'],['bicolour','Bicolour'],['calico','Calico'],['tortie','Tortie'],['point','Colourpoint']],
+  pat:[['solid','Solid'],['bicolour','Bicolour'],['calico','Calico'],['tortie','Tortie'],['dilute','Dilute'],['tabby','Tabby'],['tuxedo','Tuxedo'],['van','Van'],['smoke','Smoke'],['marbled','Marbled']],
   tex:[['smooth','Smooth'],['jelly','Jelly'],['velvet','Velvet'],['glow','Glow'],['plush','Plush'],['sparkle','Sparkle']],
   ear:[['pointy','Pointy'],['round','Round'],['fold','Folded'],['tuft','Lynx tufts'],['tiny','Tiny']],
   eyes:[['dot','Dot'],['sparkly','Sparkly'],['big','Big']],
   mouth:[['w',':3'],['blep','Blep'],['fang','Fang'],['omega','ω'],['flat','Calm'],['kiss','Kiss']],
-  fd:[['blush','Rosy cheeks'],['whisk','Whiskers'],['muzzle','Muzzle patch'],['brow','Brow dots']],
+  fd:[['blush','Rosy cheeks'],['whisk','Whiskers'],['brow','Brow dots']],
   tail:[['curly','Curly'],['up','Straight up'],['floof','Floof'],['tassel','Tassel'],['none','None']]};
 var DEF={a:{body:'lantern',col:'ember',pat:'solid',tex:'smooth',ear:'pointy',eyes:'sparkly',ec:'ink',mouth:'w',fd:{blush:1},tail:'tassel',name:''},
-  b:{body:'fur',col:'blue',pat:'tabby',tex:'smooth',ear:'fold',eyes:'big',ec:'amber',mouth:'w',fd:{blush:1,muzzle:1},tail:'curly',name:''}};
+  b:{body:'fur',col:'blue',pat:'tabby',tex:'smooth',ear:'fold',eyes:'big',ec:'amber',mouth:'w',fd:{blush:1},tail:'curly',name:''}};
 function clean(w,v){var d=DEF[w],n=JSON.parse(JSON.stringify(d));if(!v||typeof v!=='object')return n;
   if(!v.body){if(typeof v.name==='string')n.name=v.name;return n} // looks saved by the old jelly cats: start from the new defaults, keep the name
   ['body','col','pat','tex','ear','eyes','ec','mouth','tail','name'].forEach(function(k){if(v[k]!=null)n[k]=v[k]});
@@ -3522,25 +3522,27 @@ function model(){if(M3)return M3;var T=THREE;
   function rng(seed){var a=0;for(var i=0;i<seed.length;i++)a=(a*31+seed.charCodeAt(i))|0;return function(){a=(a+0x6D2B79F5)|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
   // the fur picture wraps round the body: x = around (the face is at a quarter), y = top to bottom
   function blob(g,x,y,rx,ry,c,a){g.fillStyle=c;g.globalAlpha=a==null?1:a;[x,x-N,x+N].forEach(function(xx){g.beginPath();g.ellipse(xx,y,rx,ry,0,0,7);g.fill()});g.globalAlpha=1}
-  function furTex(col,pat,tex){return canvasTex('F'+col+pat+tex,function(g){var b=COLS[col][1],R=rng(pat+col),F=.25*N,WH='#fbf8f4',dk=shade(b,-.42);
-    var top=b,mid=b;if(pat==='point'){top=shade(b,.62);mid=shade(b,.7)}if(pat==='calico')top=mid=WH;
-    var gr=g.createLinearGradient(0,0,0,N);gr.addColorStop(0,shade(top,-.25));gr.addColorStop(.45,mid);gr.addColorStop(.75,shade(mid,.18));gr.addColorStop(1,shade(mid,-.15));g.fillStyle=gr;g.fillRect(0,0,N,N);
+  // coats follow the usual cat coat types; calico and tabby always come in their own natural colours
+  function furTex(col,pat,tex){return canvasTex('F'+col+pat+tex,function(g){var b=COLS[col][1],R=rng(pat+col),F=.25*N,WH='#fbf8f4',dk=shade(b,-.42),GIN='#e8893a',BLK='#34292b';
+    if(pat==='tabby'){b='#a07a52';dk='#4a3322'}
+    if(pat==='dilute')b=shade(b,.45);
+    var top=b,mid=b;if(pat==='calico'||pat==='van'||pat==='dilute')top=mid=WH;if(pat==='smoke'){top=shade(b,-.3);mid=shade(b,.55)}
+    var gr=g.createLinearGradient(0,0,0,N);gr.addColorStop(0,shade(top,-.2));gr.addColorStop(.45,mid);gr.addColorStop(.75,shade(mid,.18));gr.addColorStop(1,shade(mid,-.12));g.fillStyle=gr;g.fillRect(0,0,N,N);
     g.lineCap='round';
-    if(pat==='tabby'||pat==='swirl'){g.strokeStyle=dk;g.globalAlpha=.6;
-      [[.23,40],[.25,50],[.27,40]].forEach(function(s){g.lineWidth=8;g.beginPath();g.moveTo(s[0]*N,70);g.lineTo(s[0]*N,70+s[1]);g.stroke()});
-      if(pat==='tabby')[.02,.07,.12,.38,.43,.48,.62,.67,.83,.88].forEach(function(u){g.lineWidth=5;g.beginPath();g.moveTo(u*N,200);g.quadraticCurveTo(u*N+9,250,u*N,305);g.stroke()});
-      else{g.globalAlpha=.75;[.04,.46].forEach(function(u){[[40,34],[24,20],[9,8]].forEach(function(r){g.lineWidth=7;[u*N,u*N+N].forEach(function(x){g.beginPath();g.ellipse(x,262,r[0],r[1]*1.25,0,0,7);g.stroke()})})});
-        [.7,.75,.8].forEach(function(u){g.lineWidth=6;g.beginPath();g.moveTo(u*N,40);g.lineTo(u*N,330);g.stroke()})}
+    if(pat==='tabby'){g.strokeStyle=dk;g.globalAlpha=.7;
+      [[.22,36],[.235,46],[.25,52],[.265,46],[.28,36]].forEach(function(s){g.lineWidth=6;g.beginPath();g.moveTo(s[0]*N,64);g.lineTo(s[0]*N,64+s[1]);g.stroke()});
+      for(var u=0;u<1;u+=.045){if(Math.abs(u-.25)<.09)continue;g.lineWidth=6;g.beginPath();g.moveTo(u*N,150);g.bezierCurveTo(u*N+12,220,u*N-8,300,u*N+6,380);g.stroke()}
+      [[.17,270],[.33,270]].forEach(function(c){g.lineWidth=5;g.beginPath();g.moveTo(c[0]*N-14,c[1]);g.quadraticCurveTo(c[0]*N,c[1]+10,c[0]*N+14,c[1]);g.stroke()});
       g.globalAlpha=1}
-    if(pat==='spotted')for(var i=0;i<60;i++){var y=90+R()*300,x=R()*N;if(Math.abs(x-F)<34&&y>200&&y<330)continue;blob(g,x,y,7+R()*8,6+R()*6,dk,.8)}
+    if(pat==='marbled'){g.strokeStyle=dk;g.globalAlpha=.6;
+      [.04,.46,.75].forEach(function(u){[[44,30],[26,18]].forEach(function(r){g.lineWidth=12;[u*N,u*N+N].forEach(function(x){g.beginPath();g.ellipse(x,250,r[0],r[1]*1.4,0,0,7);g.stroke()})})});
+      [[.23,40],[.25,50],[.27,40]].forEach(function(s){g.lineWidth=7;g.beginPath();g.moveTo(s[0]*N,70);g.lineTo(s[0]*N,70+s[1]);g.stroke()});g.globalAlpha=1}
     if(pat==='tuxedo'){blob(g,F,410,60,95,WH);blob(g,F,300,34,30,WH);g.fillStyle=WH;g.fillRect(0,468,N,44)}
     if(pat==='bicolour'){g.fillStyle=WH;g.beginPath();g.moveTo(0,N);for(var x=0;x<=N;x+=16)g.lineTo(x,330+Math.sin(x/N*Math.PI*6)*14);g.lineTo(N,N);g.fill();
       g.beginPath();g.moveTo(F,150);g.lineTo(F+40,330);g.lineTo(F-40,330);g.closePath();g.fill()}
-    if(pat==='calico'){for(var j=0;j<9;j++){var x2=R()*N,y2=40+R()*300;if(Math.abs(x2-F)<40&&y2>200)x2+=80;blob(g,x2,y2,26+R()*34,18+R()*26,j%2?b:'#3b3236',.95)}}
-    if(pat==='tortie'){for(var k=0;k<160;k++){blob(g,R()*N,R()*N,4+R()*16,3+R()*10,k%3?'#3a2a28':'#d9732c',.35+R()*.3)}}
-    if(pat==='point'){g.save();g.translate(F,262);g.scale(1.15,1.15);var pg=g.createRadialGradient(0,0,6,0,0,62);pg.addColorStop(0,shade(b,-.5));pg.addColorStop(.55,shade(b,-.38));pg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=pg;g.fillRect(-70,-70,140,140);g.restore();
-      var tg=g.createLinearGradient(0,0,0,130);tg.addColorStop(0,shade(b,-.5));tg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=tg;g.fillRect(0,0,N,130);
-      var bg=g.createLinearGradient(0,440,0,N);bg.addColorStop(0,'rgba(0,0,0,0)');bg.addColorStop(1,shade(b,-.3));g.fillStyle=bg;g.fillRect(0,440,N,N-440)}
+    if(pat==='calico'||pat==='dilute'){var pc=pat==='calico'?[GIN,BLK]:['#97a2bb','#efc995'];blob(g,F-62,95,62,58,pc[0]);blob(g,F+66,120,48,44,pc[1]);blob(g,F+20,40,30,26,pc[0]);for(var j=0;j<9;j++){var x2=R()*N,y2=40+R()*300;if(Math.abs(x2-F)<40&&y2>200)x2+=80;blob(g,x2,y2,26+R()*34,18+R()*26,pc[j%2],.95)}}
+    if(pat==='van'){blob(g,F-56,80,58,62,b);blob(g,F+56,80,58,62,b);blob(g,F,30,90,34,b);blob(g,.75*N,120,50,36,b,.9)}
+    if(pat==='tortie'){for(var k=0;k<160;k++){blob(g,R()*N,R()*N,4+R()*16,3+R()*10,k%3?'#3a2a28':GIN,.35+R()*.3)}}
     // short fur strands: drawn as two batched paths (one light, one dark) so the picture is quick to make
     var n=tex==='velvet'?5000:tex==='jelly'?0:15000,pl=new Path2D(),pd=new Path2D();
     for(var q=0;q<n;q++){var sx=R()*N,sy=R()*N,pp=R()>.5?pl:pd;pp.moveTo(sx,sy);pp.lineTo(sx+(R()-.5)*1.5,sy+2+R()*3)}
@@ -3593,7 +3595,7 @@ function model(){if(M3)return M3;var T=THREE;
         if(kind!=='dot'){var h2=new T.Mesh(new T.SphereGeometry(rr*.14,10,6),white);h2.position.copy(h.point).add(new T.Vector3(-rr*.3,-rr*.45,.07));cat.add(h2)}}});
     var fd=o.fd||{};
     if(fd.blush)[-1,1].forEach(function(sx){var bl=new T.Mesh(new T.CircleGeometry(.13,24),new T.MeshBasicMaterial({color:'#ff4f7a',transparent:true,opacity:.42,depthWrite:false}));bl.scale.set(1.3,.75,1);place(bl,sx*.68,-.22)});
-    if(fd.muzzle){var mz=new T.Mesh(new T.CircleGeometry(.2,32),new T.MeshStandardMaterial({color:'#f6f2ee',roughness:.95,transparent:true,opacity:.92}));mz.scale.set(1.15,.72,1);place(mz,0,-.2,.006)}
+    if(false&&fd.muzzle){var mz=new T.Mesh(new T.CircleGeometry(.2,32),new T.MeshStandardMaterial({color:'#f6f2ee',roughness:.95,transparent:true,opacity:.92}));mz.scale.set(1.15,.72,1);place(mz,0,-.2,.006)}
     if(fd.brow)[-1,1].forEach(function(sx){var b=new T.Mesh(new T.SphereGeometry(.05,12,8),new T.MeshBasicMaterial({color:L?'#7a2a3a':shade(COLS[col][1],-.45)}));b.scale.set(1.3,.7,.4);place(b,sx*.4,.22,.01)});
     if(fd.whisk){var wm=new T.MeshBasicMaterial({color:o.col==='black'?'#d8d0e8':'#5a4048'});[-1,1].forEach(function(sx){[-.04,.04].forEach(function(dy){var h=onSurf(sx*.62,-.16+dy);if(!h)return;var a=h.point.clone(),b=a.clone().add(new T.Vector3(sx*.38,dy*2.2,.12));cat.add(new T.Mesh(new T.TubeGeometry(new T.LineCurve3(a,b),2,.007,5),wm))})})}
     if(!L){var nz=onSurf(0,-.135);if(nz){var nose=new T.Mesh(new T.SphereGeometry(.045,16,10),new T.MeshBasicMaterial({color:'#ff8fa6'}));nose.scale.set(1.3,.8,.6);nose.position.copy(nz.point);cat.add(nose)}}
@@ -3603,7 +3605,7 @@ function model(){if(M3)return M3;var T=THREE;
     if(m0==='flat')line(function(t){return [-.07+t*.14,my-.04]});
     if(m0==='kiss')line(function(t){return [.02+Math.sin(t*Math.PI*2)*.05,my+.02-t*.12]});
     if(m0==='open'){var mo=new T.Mesh(new T.CircleGeometry(.075,20),new T.MeshBasicMaterial({color:'#5a1830'}));mo.scale.set(1.2,1,1);place(mo,0,my-.04,.012);place(new T.Mesh(new T.CircleGeometry(.04,16),new T.MeshBasicMaterial({color:'#ff7a8a'})),0,my-.075,.016)}
-    if(m0==='blep'){var tg=new T.Mesh(new T.SphereGeometry(.05,16,10),new T.MeshBasicMaterial({color:'#ff7a8a'}));tg.scale.set(1,1.2,.5);place(tg,0,my-.11,.02)}
+    if(m0==='blep'){var tg=new T.Mesh(new T.SphereGeometry(.055,16,10),new T.MeshBasicMaterial({color:'#ff6f91',toneMapped:false}));tg.scale.set(1,1.25,.5);tg.renderOrder=2;place(tg,0,my-.105,.03)}
     if(m0==='fang'){var f=new T.Mesh(new T.ConeGeometry(.022,.06,8),white),hf=onSurf(.07,my-.07);if(hf){f.position.copy(hf.point).add(hf.face.normal.clone().multiplyScalar(.015));f.rotation.z=Math.PI;cat.add(f)}}
     var s=side||1,tl=L?(o.tail==='none'?'none':'tassel'):(o.tail||'curly');
     function tube(pts,r){var c=new T.CatmullRomCurve3(pts.map(function(p){return new T.Vector3(s*p[0],p[1],p[2])}));cat.add(new T.Mesh(new T.TubeGeometry(c,48,r,14),mat));var e=new T.Mesh(new T.SphereGeometry(r,14,10),mat),l=pts[pts.length-1];e.position.set(s*l[0],l[1],l[2]);cat.add(e)}
@@ -3725,7 +3727,7 @@ function cname(w){return cfg[w].name||(w==='a'?'Mochi':'Bao')}
 function ago(t){var s=(Date.now()-new Date(t).getTime())/1000;if(!(s>=0))return '';if(s<60)return 'just now';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' h ago';var d=Math.floor(s/86400);return d===1?'yesterday':d+' days ago'}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function dot(w){return COLS[cfg[w].col][1]}
+function dot(w){var c=cfg[w];if(c.body==='fur'&&c.pat==='calico')return '#e8893a';if(c.body==='fur'&&c.pat==='tabby')return '#a07a52';return COLS[c.col][1]}
 function paintDots(n){if(!n)return;n.style.setProperty('--ca',dot('a'));n.style.setProperty('--cb',dot('b'))}
 // each person's local time, from the home airport on their profile
 var TZ={RUH:'Asia/Riyadh',JED:'Asia/Riyadh',DMM:'Asia/Riyadh',SYD:'Australia/Sydney',MEL:'Australia/Melbourne',PER:'Australia/Perth',DOH:'Asia/Qatar',DXB:'Asia/Dubai',AUH:'Asia/Dubai',MCT:'Asia/Muscat',BAH:'Asia/Bahrain',
@@ -3848,7 +3850,7 @@ function fillHist(){if(!hist)return;var l=hist.querySelector('.ush-l'),day='',h=
 var dWho='a',thumbQ=[],thumbBusy=false;
 function sections(c){var L=c.body==='lantern';return [
   ['body','Body','Lantern glows like a paper lantern; furry is a regular cat',OPT.body],
-  ['pat','Fur pattern','',L?null:OPT.pat],
+  ['pat','Coat','Calico and tabby come in their own natural colours',L?null:OPT.pat],
   ['tex','Fur texture','',L?null:OPT.tex],
   ['ear','Ears',L?'Lantern cats come with pointy or folded ears':'',L?OPT.ear.filter(function(o){return o[0]==='pointy'||o[0]==='fold'}):OPT.ear],
   ['eyes','Eyes','Other eye shapes are kept for emotes',OPT.eyes],
@@ -3887,7 +3889,7 @@ function syncDlg(keepName){if(!dlg)return;var c=cfg[dWho],q=function(s){return d
   if(!keepName){var ni=q('.usd-nm');ni.value=c.name||'';ni.placeholder=cname(dWho)}
   [].forEach.call(dlg.querySelectorAll('.usd-col button'),function(b){b.setAttribute('aria-pressed',String(b.dataset.v===c.col))});
   [].forEach.call(dlg.querySelectorAll('.usd-ec button'),function(b){b.setAttribute('aria-pressed',String(b.dataset.v===c.ec))});
-  q('.usd-cn').textContent=COLS[c.col][0];q('.usd-en').textContent=ECOL[c.ec][0];
+  var fixed=c.body==='fur'&&(c.pat==='calico'||c.pat==='tabby');q('.usd-col').classList.toggle('fixed',fixed);q('.usd-cn').textContent=fixed?(c.pat==='calico'?'Calico colours':'Tabby colours'):COLS[c.col][0];q('.usd-en').textContent=ECOL[c.ec][0];
   [].forEach.call(dlg.querySelectorAll('.usd-me button'),function(b){b.textContent=pname(b.dataset.v);b.setAttribute('aria-pressed',String(b.dataset.v===me))});
   if(keepName)return;
   // option tiles, each a small picture of this cat with that option
