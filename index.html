@@ -2860,7 +2860,7 @@ function renderX(){const v=(glH()||"#welcome").slice(1);fillDestSelects();
 window.onView=v=>{renderX();if(v==="visas")renderUpd()};fillCur();renderFx();renderProfiles();render();route();
 fillCur();renderFx();
 (async()=>{
-  let tries=0;while(!db&&tries<40){await new Promise(r=>setTimeout(r,250));tries++}
+  if(!db&&window.claude&&claude.use){try{db=await claude.use("db")}catch(e){}}
   if(!db)return;
   try{
     db.collection("expenses").onSnapshot(s=>{expenses=s.docs.map(d=>({id:d.id,...d.data()}));if(glH()==="#money")renderMoney()});
@@ -2882,7 +2882,7 @@ fillCur();renderFx();
 const _onView=window.onView;window.onView=v=>{if(TRIP_V.includes(v)&&decision.dest)curDest=decision.dest;_onView(v);
   if(v==="map"){renderMap2();mpWatch()}
   if(v==="welcome"){const p=document.querySelector("#wl-trip .choice-body p");if(p)p.textContent=(decision.dest?destTitle()+". ":"Pick your destination, then plan ")+"Hotels, checklist, itinerary, flights, map, budget and spending."}};
-(async()=>{let tries=0;while(!db&&tries<40){await new Promise(r=>setTimeout(r,250));tries++}if(!db)return;
+(async()=>{if(!db&&window.claude&&claude.use){try{db=await claude.use("db")}catch(e){}}if(!db)return;
   try{db.doc("board/decision").onSnapshot(s=>{const v=s&&s.exists?s.data():null;if(v&&"dest" in v&&(v.dest!==decision.dest)){decision=v;if(v.dest)curDest=v.dest;try{localStorage.setItem("meetup-decision",JSON.stringify(v))}catch(e){}if(curHub==="trip"){renderCover("trip");renderX()}}});
     db.collection("mappins").onSnapshot(s=>{s.docs.forEach(x=>{const v=x.data();if(v&&v.c&&Array.isArray(v.p))pinCache[v.c]=v.p});if(glH()==="#map")renderMap2()})}catch(e){}})();
 if(glH()==="#home"||glH()==="#map"||glH()==="#plan")window.onView(glH().slice(1));
@@ -5860,6 +5860,7 @@ html:not(.unlocked) #gl-sync{display:none}
   function load(){if(D)return;try{D=JSON.parse(localStorage.getItem(LS)||'null')}catch(e){}D=norm(D)}
   function hookDb(){if(sub)return;var d=null;try{d=db}catch(e){}if(!d)return;sub=true;
     try{d.doc('board/stays').onSnapshot(function(s){var v=s&&s.exists?s.data():null;if(v){D=norm(v);try{localStorage.setItem(LS,JSON.stringify(D))}catch(e){}if(!busy&&visible())render()}})}catch(e){console.error(e)}}
+   try{if(window.claude&&claude.use)claude.use('db').then(function(){setTimeout(function(){hookDb();if(visible())render()},0)})}catch(e){}
   function save(){D.at=new Date().toISOString();try{localStorage.setItem(LS,JSON.stringify(D))}catch(e){}var d=null;try{d=db}catch(e){}
     if(d){try{d.doc('board/stays').set(JSON.parse(JSON.stringify(D)))}catch(e){console.error(e)}}}
   function row(id){return D.rows.find(function(r){return r.id===id})}
